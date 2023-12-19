@@ -10,10 +10,20 @@ pn.set_marking(Marking( Pending=MultiSet([("Pod",0.5,1,0,0)]*10),
                         )
                     )
 pn.draw("init.png")  
+
+#State Graph
+g = StateGraph(pn)
+for i in g:
+    print(f"{i} --> {g.net.get_marking()}")
+g.draw("state_graph.png")
+
+
+# Generate Final State ( We know there is a single final state that  evey possible firing sequence leads to)
 while(True):
-    input()
-    t = pn.transition("In-Cluster_Placement")
-    m = t.modes()
-    t.fire(random.choice(m))    
-    pn.draw("state.png")  
-    
+    try:
+        t = pn.transition("In-Cluster_Placement")
+        m = t.modes()
+        t.fire(random.choice(m))    
+        pn.draw("state.png")  
+    except:
+        break
