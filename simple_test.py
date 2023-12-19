@@ -13,9 +13,18 @@ pn.draw("init.png")
 
 #State Graph
 g = StateGraph(pn)
+# g.build()
+final = 0
 for i in g:
-    print(f"{i} --> {g.net.get_marking()}")
+    final = i
 g.draw("state_graph.png")
+
+#generate adjacency matrix and state map
+import util
+map , am = util.explain(g,final)
+for i in map:
+    print(f"Pending : {len(i('Pending').items())} Running : {len(i('Running').items())} Allocated_Resources : {i('Allocated_Resources').items()}")    
+i = map[-1]
 
 
 # Generate Final State ( We know there is a single final state that  evey possible firing sequence leads to)
