@@ -4,7 +4,7 @@ from nets import *
 from KarmadaPN import ClusterPN as PN
 import random
 pn = PN.MultiNodeClusterPn("Cluster1")
-# pn = pn.build()
+pn = pn.build()
 pn.set_marking(Marking( Cluster1_Pending=MultiSet([("Pod",0.5,1,0,0)]*10),
                         Cluster1_Allocated_Resources=MultiSet([("node1",0,0),("node2",0,0)]),
                         Cluster1_Available_Resources=MultiSet([("node1",0.512,3),("node2",0.512,1)])
@@ -20,7 +20,7 @@ g = StateGraph(pn)
 final = 0
 for i in g:
     final = i
-g.draw("state_graph.png")
+g.draw("state_graph2.png")
 
 #generate adjacency matrix and state map
 import util

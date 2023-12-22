@@ -14,6 +14,7 @@ class PNComponent:
         self.Inputs = []
         self.Outputs = []
         self.globals = []
+        self.merges = []
     def add_place(self,pl:Place):
         pl.name = self.name+"_"+pl.name
         self.Places.append(pl)
@@ -43,6 +44,11 @@ class PNComponent:
             o.place = self.name+"_"+o.place
             o.transition = self.name+"_"+o.transition
             self.Outputs.append(o)
+    def merge(self,p1,p2,name=None):
+        if name == None:
+            name= f"{p1}/{p2}"
+        self.merges.append((self.name+"_"+name,(self.name+"_"+p1,self.name+"_"+p2)))
+
     def build(self)-> PetriNet:
         pn = PetriNet(self.name)
         for g in self.globals:
@@ -61,5 +67,10 @@ class PNComponent:
 
         for i in self.Outputs:
             pn.add_output(i.place,i.transition,i.tokens)
-
+        for m in self.merges:
+            dest = m[0]
+            src = m[1]
+            pn.merge_places(dest,src)
+            for p in src:
+                pn.remove_place(p)
         return pn

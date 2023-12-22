@@ -31,5 +31,5 @@ def MultiNodeClusterPn(name,pending=[],allocated=[],available=[],running=[]):
     pn.add_output("Running","In-Cluster_Placement",Tuple([Variable("pod"), Variable("mincpu"), Variable("maxcpu"), Variable("minram"), Variable("maxram")]))
     pn.add_output("Available_Resources","In-Cluster_Placement",Tuple([Expression("Nid"),Expression("Nram"),Expression("Ncpu")]))
     pn.add_output("Allocated_Resources","In-Cluster_Placement",Tuple([Expression("nid"),Expression("nram+minram"),Expression("ncpu+mincpu")]))
-    return pn.build()
+    return pn
 
