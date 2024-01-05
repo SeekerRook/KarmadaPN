@@ -1,7 +1,7 @@
 import snakes.plugins
 snakes.plugins.load("gv","snakes.nets","nets")
 from nets import *
-from KarmadaPN import ClusterPN as CPN
+from KarmadaPN.PNS import ClusterPN as CPN
 from KarmadaPN import PN as PN
 import random
 c1 = CPN.MultiNodeClusterPn("Cluster1")
@@ -27,7 +27,7 @@ pn = pn.build()
 #                         Cluster1_Available_Resources=MultiSet([("node1",0.512,3),("node2",0.512,1)])
 #                         )
 #                     )
-pn.draw("empty.png")
+pn.draw("test2_empty.png")
 pn.set_marking(Marking( Simple_MultiCluster_Init=MultiSet([("Pod",0.5,1,0,0)]*10),
                         Simple_MultiCluster_Cluster2_Allocated_Resources=MultiSet([("node1",0,0),("node2",0,0)]),
                         Simple_MultiCluster_Cluster2_Available_Resources=MultiSet([("node1",0.512,3),("node2",0.512,1)])
@@ -38,7 +38,7 @@ pn.set_marking(Marking( Simple_MultiCluster_Init=MultiSet([("Pod",0.5,1,0,0)]*10
 
 print(pn.place())
 print(pn.transition())
-pn.draw("init.png")  
+pn.draw("test2_init.png")  
 
 #State Graph
 g = StateGraph(pn)
@@ -48,11 +48,11 @@ loading=".:':"
 for i in g:
     final = i
     if i%100 == 0:print(f"    {loading[i//100%len(loading)]}   [{i}]",end='\r')
-    if(i%1000 == 0):g.net.draw("tmp.png")
-g.draw("state_graph.png")
+    if(i%1000 == 0):g.net.draw("test2_tmp.png")
+g.draw("test2_state_graph.png")
 
 #generate adjacency matrix and state map
-import util
+import KarmadaPN.util as util
 map , am = util.explain(g,final)
 for i in map:
     print(f"Pending : {len(i('Pending').items())} Running : {len(i('Running').items())} Allocated_Resources : {i('Allocated_Resources').items()}")    
@@ -66,7 +66,7 @@ while(True):
             try:
                 m = t.modes()
                 t.fire(random.choice(m))    
-                pn.draw("state.png")  
+                pn.draw("test2_state.png")  
             except:
                 break
     except:

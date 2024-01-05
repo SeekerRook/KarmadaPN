@@ -1,18 +1,18 @@
 ## Pod Lifecycle PN
 import snakes.plugins
 snakes.plugins.load("gv","snakes.nets","nets")
-from .PN import PNComponent
+from ..PN import PNComponent
 from nets import *
 
 from os import system
 
 
-def f(pod,mincpu,maxcpu,minram,maxram,Ncpu,ncpu,Nram,nram,Nid,nid):
-    return (nid==Nid and minram <= Nram-nram and mincpu <= Ncpu-ncpu)
+# def f(pod,mincpu,maxcpu,minram,maxram,Ncpu,ncpu,Nram,nram,Nid,nid):
+#     return (nid==Nid and minram <= Nram-nram and mincpu <= Ncpu-ncpu)
 def MultiNodeClusterPn(name,pending=[],allocated=[],available=[],running=[]):
 
     pn = PNComponent(name)
-    pn.globals.append("import KarmadaPN.ClusterPN")
+    # pn.globals.append("import KarmadaPN.PNS.ClusterPN")
 
     #Places
     pn.add_place(Place("Pending"))
