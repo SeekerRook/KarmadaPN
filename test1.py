@@ -29,7 +29,7 @@ g.draw("test1_state_graph2.png")
 import KarmadaPN.util as util
 map , am = util.explain(g,final)
 for i in map:
-    print(f"Pending : {len(i('Pending').items())} Running : {len(i('Running').items())} Allocated_Resources : {i('Allocated_Resources').items()}")    
+    print(f"Pending : {len(i('Cluster1_Pending').items())} Running : {len(i('Cluster1_Running').items())} Allocated_Resources : {i('Cluster1_Allocated_Resources').items()}")    
 i = map[-1]
 
 

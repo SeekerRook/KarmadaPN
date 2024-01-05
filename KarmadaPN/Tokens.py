@@ -7,12 +7,19 @@ class Service:
         self.minCPU = minCPU
         self.maxPods = maxPods
         self.minPods = minPods
+    @classmethod
+    def from_tuple(cls,tuple):
+        svc = Service("")
+        [svc.name, svc.minCPU, svc.maxCPU,svc.minRAM, svc.maxRAM,  svc.minPodsods, svc.maxPods] = tuple
+        return svc
     def __call__(self):
-        return [self.name,self.minram,self.maxram,self.mincpu,self.maxcpu,self.minpods,self.maxpods,]
+        return (self.name,self.minCPU,self.maxCPU,self.minRAM,self.maxRAM,self.minPods,self.maxPods)
     def __repr__(self):
         return f"{self.name}"
+
+
 class Node:
-    def __init__(self,name:str,allocatedCPU=0,totalCPU=0,allocatedRAM=0,totalRAM=0,runningPods=0,maxPods=0,metadata=""):
+    def __init__(self,name:str,totalCPU=0,totalRAM=0,allocatedCPU=0,allocatedRAM=0,runningPods=0,maxPods=0,metadata=""):
         self.name = name
         self.allocatedRAM = allocatedRAM
         self.totalRAM = totalRAM
@@ -22,6 +29,7 @@ class Node:
         self.runningPods = runningPods
         self.metadata=metadata
     def add(self,svc:Service):
+
         return (self.totalCPU - self.allocatedCPU >= svc.minCPU )and(self.totalRAM - self.allocatedRAM >= svc.minRAM)and( self.maxPods==0 or self.maxPods - self.runningPods >= svc.minPods )
     def update(self,svc:Service):
         res = self.copy()
@@ -31,12 +39,16 @@ class Node:
         return res
     @classmethod
     def from_tuple(cls,tuple):
-        node = Node()
-        [node.name, node.allocatedRAM, node.totalRAM, node.allocatedCPU, node.totalCPU, node.maxPods, node.runningPods] = tuple
+        node = Node("")
+        [node.name,  node.allocatedCPU, node.totalCPU, node.allocatedRAM, node.totalRAM,  node.runningPods, node.maxPods] = tuple
+        if tuple!=node(): input(f"{tuple} != {node()}")
         return node
     def copy(self):
-        return Node(self.name,self.allocatedCPU,self.totalCPU,self.allocatedRAM,self.totalRAM,self.runningPods,self.maxPods,self.metadata)
+        return Node(self.name,allocatedCPU=self.allocatedCPU,totalCPU=self.totalCPU,allocatedRAM=self.allocatedRAM,totalRAM=self.totalRAM,runningPods=self.runningPods,maxPods=self.maxPods,metadata=self.metadata)
     def __call__(self):
-        return [self.name, self.allocatedRAM, self.totalRAM, self.allocatedCPU, self.totalCPU, self.maxPods, self.runningPods]
+        return (self.name,  self.allocatedCPU, self.totalCPU, self.allocatedRAM, self.totalRAM,  self.runningPods,self.maxPods)
     def __repr__(self):
         return f"{self.name}:[{self.allocatedCPU}/{self.totalCPU}|{self.allocatedRAM}/{self.totalRAM}|{self.runningPods}/{self.maxPods}]"
+def Update(node,svc):
+
+    return Node.from_tuple(node).update(Service.from_tuple(svc))()
