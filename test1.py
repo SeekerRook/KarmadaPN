@@ -5,7 +5,7 @@ from KarmadaPN.PNS import ClusterPN as CPN
 from KarmadaPN import PN as PN
 
 import random
-pn = CPN.MultiNodeClusterPn("Cluster1")
+pn = CPN.MultiNodeClusterPN("Cluster1",mode="legacy")
 
 pn = pn.build()
 pn.set_marking(Marking( Cluster1_Pending=MultiSet([("Pod",0.5,1,0,0)]*10),

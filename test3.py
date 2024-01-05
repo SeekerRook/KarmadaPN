@@ -6,7 +6,7 @@ from KarmadaPN.Tokens import Service, Node
 from KarmadaPN import PN as PN
 
 import random
-pn = CPN.MultiNodeClusterPn("Cluster1",mode="new")
+pn = CPN.MultiNodeClusterPN("Cluster1",mode="new")
 
 pn = pn.build()
 pn.set_marking(Marking( Cluster1_Pending=MultiSet([Service("Pod",minCPU=0.5,maxCPU=1)()]*10),

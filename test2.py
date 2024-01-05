@@ -4,9 +4,9 @@ from nets import *
 from KarmadaPN.PNS import ClusterPN as CPN
 from KarmadaPN import PN as PN
 import random
-c1 = CPN.MultiNodeClusterPn("Cluster1")
+c1 = CPN.MultiNodeClusterPN("Cluster1",mode="legacy")
 # pn = pn.build()
-c2 = CPN.MultiNodeClusterPn("Cluster2")
+c2 = CPN.MultiNodeClusterPN("Cluster2",mode="legacy")
 
 pn = PN.PNComponent("Simple_MultiCluster")
 pn.add_place(Place("Init"))
