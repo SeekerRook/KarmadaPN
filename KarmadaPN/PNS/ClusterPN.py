@@ -10,7 +10,7 @@ from os import system
 # def f(pod,mincpu,maxcpu,minram,maxram,Ncpu,ncpu,Nram,nram,Nid,nid):
 #     return (nid==Nid and minram <= Nram-nram and mincpu <= Ncpu-ncpu)
 def MultiNodeClusterPN(name,pending=[],allocated=[],available=[],running=[],mode=""):
-    if mode == "legacy":
+    if mode == "legacy": #TODO remove
         pn = PNComponent(name)
         # pn.globals.append("import KarmadaPN.PNS.ClusterPN")
 
