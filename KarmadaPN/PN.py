@@ -1,6 +1,7 @@
 import snakes.plugins
 snakes.plugins.load("gv","snakes.nets","nets")
 from nets import *
+
 class Arc:
     def __init__(self,pl:str,tr:str,tokens):
         self.place = pl
