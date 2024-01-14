@@ -44,6 +44,8 @@ class PNComponent:
             o.place = self.name+"_"+o.place
             o.transition = self.name+"_"+o.transition
             self.Outputs.append(o)
+        for g in child.globals:
+            self.globals.append(g)
     def merge(self,p1,p2,name=None):
         if name == None:
             name= f"{p1}/{p2}"
