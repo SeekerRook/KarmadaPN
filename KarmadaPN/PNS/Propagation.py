@@ -11,19 +11,19 @@ def PP_DuplicatedPN (name,cluster_nmber:int=2):
 
     pn.add_place(Place("Services"))
 
-    pn.add_transition(Transition("Duplicate"))
+    pn.add_transition(Transition("Propagate"))
     pn.add_input("Services","Duplicate",Variable("svc"))
     for i in range(cluster_nmber):
         pn.add_place(Place(f"C{i+1}"))
         pn.add_output(f"C{i+1}","Duplicate",Variable("svc"))      
     return pn
 
-def  PP_AggregatedPN():
+def  PP_AggregatedPN(name):
     pass
 
-def  PP_StaticWeightsPN():
+def  PP_StaticWeightsPN(name):
     pass
 
-def  PP_DynamicWeightsPN():
+def  PP_DynamicWeightsPN(name):
     pass
 
