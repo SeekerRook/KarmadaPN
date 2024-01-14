@@ -24,8 +24,6 @@ karmada.merge("DuplicatedPP_C3","Cluster3_Pending")
 
 karmadapn = karmada.build()
 
-# karmadapn.draw("test_duplicate_pp_empty.png")
-
 karmadapn.set_marking(nets.Marking( Karmada_DuplicatedPP_Services=nets.MultiSet([Service("Pod",minCPU=0.5,maxCPU=1)()]*10),
                         Karmada_Cluster1_Nodes=nets.MultiSet([Node("node1",3,0.512)(),Node("node2",1,0.512)()]),
                         Karmada_Cluster2_Nodes=nets.MultiSet([Node("node1",4,0.512)()]),
