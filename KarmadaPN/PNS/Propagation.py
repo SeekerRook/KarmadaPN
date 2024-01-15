@@ -15,7 +15,7 @@ def PP_DuplicatedPN (name,cluster_nmber:int=2):
     pn.add_input("Services","Propagate",Variable("svc"))
     for i in range(cluster_nmber):
         pn.add_place(Place(f"C{i+1}"))
-        pn.add_output(f"C{i+1}","Propagate",Variable("svc"))      
+        pn.add_output(f"C{i+1}","Propagate",Expression("svc"))      
     return pn
 
 def  PP_AggregatedPN(name):

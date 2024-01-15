@@ -11,7 +11,7 @@ def explain(graph,final=0,build=False,verbose=False):
         for i in graph:
             final = i
     states = []
-    adjacency = np.zeros((final+1,final+1))
+    adjacency = np.zeros((final+1,final+1),dtype=int)
     for i in range(final):
         graph.goto(i)
         states.append(graph.net.get_marking())
@@ -61,7 +61,7 @@ def graph_test(pn,name = "",timer = 10, tmpimg =100, printgraph = True):
     import KarmadaPN.util as util
     print("Generatin Adjacency Matrix ......",end='\r')
     map , am = util.explain(g,final)
-    np.savetxt(f"{name}_AM.txt", am, fmt='%.18e', delimiter=' ', newline='\n', header='', footer='', comments='# ', encoding=None)
+    np.savetxt(f"{name}_AM.txt", am, fmt='%i', delimiter=' ', newline='\n', header='', footer='', comments='# ', encoding=None)
     print("                                  ")
 
     return i

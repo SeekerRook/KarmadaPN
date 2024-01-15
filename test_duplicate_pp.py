@@ -24,7 +24,7 @@ karmada.merge("DuplicatedPP_C3","Cluster3_Pending")
 
 karmadapn = karmada.build()
 
-karmadapn.set_marking(nets.Marking( Karmada_DuplicatedPP_Services=nets.MultiSet([Service("Pod",minCPU=0.5,maxCPU=1)()]*10),
+karmadapn.set_marking(nets.Marking( Karmada_DuplicatedPP_Services=nets.MultiSet([(Service("Pod",minCPU=0.5,maxCPU=1)(),10),(Service("Pod2",minCPU=0.5,maxCPU=1)(),1)]),
                         Karmada_Cluster1_Nodes=nets.MultiSet([Node("node1",3,0.512)(),Node("node2",1,0.512)()]),
                         Karmada_Cluster2_Nodes=nets.MultiSet([Node("node1",4,0.512)()]),
                         Karmada_Cluster3_Nodes=nets.MultiSet([Node("node1",1,0.512)(),Node("node2",1,0.512)()])),                      
@@ -41,7 +41,7 @@ init_state(karmadapn,"test_duplicate_pp_")
 
 #State Graph
 
-graph_test(karmadapn,"test_duplicate_pp_",timer=100,tmpimg=0,printgraph=False)
+graph_test(karmadapn,"test_duplicate_pp_",timer=100,tmpimg=1000,printgraph=False)
 
 
 # Final State

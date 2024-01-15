@@ -9,7 +9,12 @@ pn = CPN.MultiNodeClusterPN("Cluster1",mode="new")
 
 pn = pn.build()
 
-pn.set_marking(nets.Marking( Cluster1_Pending=nets.MultiSet([Service("Pod",minCPU=0.5,maxCPU=1)()]*10),
+# pn.set_marking(nets.Marking( Cluster1_Pending=nets.MultiSet([Service("Pod",minCPU=0.5,maxCPU=1)()]*10),
+                        # Cluster1_Nodes=nets.MultiSet([Node("node1",3,0.512)(),Node("node2",1,0.512)()]),
+                        # )
+                    # )
+
+pn.set_marking(nets.Marking( Cluster1_Pending=nets.MultiSet([(Service("Pod",minCPU=0.5,maxCPU=1)(),10)]),
                         Cluster1_Nodes=nets.MultiSet([Node("node1",3,0.512)(),Node("node2",1,0.512)()]),
                         )
                     )
