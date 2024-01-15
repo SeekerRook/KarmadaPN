@@ -18,9 +18,9 @@ karmada.add_component(p)
 karmada.add_component(c1)
 karmada.add_component(c2)
 karmada.add_component(c3)
-karmada.merge("DuplicatedPP_C1","Cluster1_Pending")
-karmada.merge("DuplicatedPP_C2","Cluster2_Pending")
-karmada.merge("DuplicatedPP_C3","Cluster3_Pending")
+karmada.merge("DuplicatedPP_C1","Cluster1_Pending","C1_Pending")
+karmada.merge("DuplicatedPP_C2","Cluster2_Pending","C2_Pending")
+karmada.merge("DuplicatedPP_C3","Cluster3_Pending","C3_Pending")
 
 karmadapn = karmada.build()
 

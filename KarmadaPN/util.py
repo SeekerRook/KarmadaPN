@@ -110,7 +110,7 @@ def final_state(pn,name):
     pn.draw(f"{name}_final.png")
     final = pn.get_marking()
     for place in final:
-        print(place)
+        print(place, len(final(place)))
         for token in final(place):
 
             print(f"    {token}")
