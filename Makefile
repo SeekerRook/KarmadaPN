@@ -10,6 +10,11 @@ duplicated:
 static:
 	python test_static_weights_pp.py
 
+
+dynamic:
+	python test_dynamic_weights_pp.py
+
 clean:
 	rm *.png*
 	rm test_*.txt
+	rm -r test_*/

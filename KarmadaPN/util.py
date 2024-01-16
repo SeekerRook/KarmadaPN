@@ -97,17 +97,30 @@ def init_state(pn,name):
 
 
 def final_state(pn,name):
+    try:
+        import os 
+        os.system(f"mkdir {name}")
+    except:
+        pass
     print( "\n~~~~~~~~~~ Final State ~~~~~~~~~~~~\n")
     print("Generating ...", end='\r')
     pn = pn.copy()
     import random
+    idx = 0
+    pn.draw(f"{name}/{idx}.png")
+
     while( has_firable_trans(pn)):
+        idx+=1
+      
         for t in pn.transition():
             if t.modes() != []:
                 m = random.choice(t.modes())
                 t.fire(m)
+                pn.draw(f"{name}/{idx}.png")
+
     print("                        ")       
     pn.draw(f"{name}_final.png")
+
     final = pn.get_marking()
     for place in final:
         print(place, len(final(place)))
