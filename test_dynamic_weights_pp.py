@@ -11,7 +11,7 @@ c1 = CPN.MultiNodeClusterPN("Cluster1")
 c2 = CPN.MultiNodeClusterPN("Cluster2")
 # c3 = CPN.MultiNodeClusterPN("Cluster3")
 
-p = P.PP_StaticWeightsPN("Static_Weights_PP",2)
+p = P.PP_DynamicWeightsPN("Static_Weights_PP",2)
 
 karmada = PN.PNComponent("Karmada")
 karmada.add_component(p)
