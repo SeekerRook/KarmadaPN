@@ -61,7 +61,7 @@ def graph_test(pn,name = "",timer = 10, tmpimg =100, printgraph = True):
     if printgraph:
         print("Drawing Graph ... ",end = '\r')
 
-        g.draw(f"{name}_state_graph.png",trans_attr=trmt,arc_attr=amt)
+        g.draw(f"{name}_state_graph.png")
         print("                           ")
 
     end = time.time()

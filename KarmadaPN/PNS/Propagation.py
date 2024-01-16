@@ -22,6 +22,11 @@ def  PP_AggregatedPN(name):
     pass
 
 def  PP_StaticWeightsPN(name,cluster_nmber:int=2):
+    pass
+
+
+def  PP_DynamicWeightsPN(name):
+    
     pn = PNComponent(name)
     # pn.globals.append("from KarmadaPN.util import available_replicas_weight")
     pn.add_place(Place("Services"))
@@ -46,8 +51,3 @@ def  PP_StaticWeightsPN(name,cluster_nmber:int=2):
         pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],{weight(i+1)})"))      
         # pn.add_output(f"C{i+1}","Propagate",Expression(f""(svc[0],round(({w(i+1)})/{wsum}))"))      
     return pn
-
-
-def  PP_DynamicWeightsPN(name):
-    pass
-

@@ -42,7 +42,7 @@ init_state(karmadapn,name)
 
 #State Graph
 
-graph_test(karmadapn,name,timer=100,tmpimg=1000,printgraph=False)
+graph_test(karmadapn,name,timer=100,tmpimg=1000,printgraph=True)
 
 
 # Final State
