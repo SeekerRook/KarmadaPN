@@ -1,5 +1,5 @@
 
-all : cluster duplicated static
+all : cluster duplicated static dynamic
 cluster:
 	python test_cluster.py
 
