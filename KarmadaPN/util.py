@@ -4,6 +4,15 @@ def printf(str,end="\n"):
     if VERBOSE:
         print(str ,end=end)
 
+def trmt (lbl,attr):
+    
+    attr["label"] = lbl
+
+def amt (lbl,attr):
+    
+    attr["label"] = ""
+
+
 def explain(graph,final=0,build=False,verbose=False):
     global VERBOSE
     VERBOSE = verbose
@@ -44,7 +53,7 @@ def graph_test(pn,name = "",timer = 10, tmpimg =100, printgraph = True):
             end = time.time()
             print(f"    {loading[i//10%len(loading)]}   states: {i} | time: {int(end-start)}s",end='\r')
         if(tmpimg != 0 and i%tmpimg == 0 ):        
-            g.net.draw(f"{name}_tmp.png")
+            g.net.draw(f"{name}_tmp.png",trans_attr=trmt,arc_attr=amt)
     print("Done")
     print(f"Total time:{end - start}s")
 
@@ -52,7 +61,7 @@ def graph_test(pn,name = "",timer = 10, tmpimg =100, printgraph = True):
     if printgraph:
         print("Drawing Graph ... ",end = '\r')
 
-        g.draw(f"{name}_state_graph.png")
+        g.draw(f"{name}_state_graph.png",trans_attr=trmt,arc_attr=amt)
         print("                           ")
 
     end = time.time()
@@ -89,9 +98,9 @@ def init_state(pn,name):
     print("Generating ...", end='\r')
     pn2 = pn.copy()
     pn2.remove_marking(pn2.get_marking())
-    pn.draw(f"{name}_empty.png")  
+    pn2.draw(f"{name}_empty.png",trans_attr=trmt,arc_attr=amt)  
 
-    pn.draw(f"{name}_init.png")  
+    pn.draw(f"{name}_init.png",trans_attr=trmt,arc_attr=amt)  
     print("                        ")       
     return pn
 
@@ -107,7 +116,7 @@ def final_state(pn,name):
     pn = pn.copy()
     import random
     idx = 0
-    pn.draw(f"{name}/{idx}.png")
+    pn.draw(f"{name}/{idx}.png",trans_attr=trmt,arc_attr=amt)
 
     while( has_firable_trans(pn)):
         idx+=1
@@ -116,10 +125,10 @@ def final_state(pn,name):
             if t.modes() != []:
                 m = random.choice(t.modes())
                 t.fire(m)
-                pn.draw(f"{name}/{idx}.png")
+                pn.draw(f"{name}/{idx}.png",trans_attr=trmt,arc_attr=amt)
 
     print("                        ")       
-    pn.draw(f"{name}_final.png")
+    pn.draw(f"{name}_final.png",trans_attr=trmt,arc_attr=amt)
 
     final = pn.get_marking()
     for place in final:

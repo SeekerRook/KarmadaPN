@@ -36,7 +36,6 @@ def  PP_StaticWeightsPN(name,cluster_nmber:int=2):
     wsum = "+".join([w(i+1) for i in range(cluster_nmber)])
     def weight(i):
        return f" round(({w(i)})/({wsum})*svc[1])"
-    print(wsum)
     for i in range(cluster_nmber):
         pn.add_place(Place(f"C{i+1}_Resource_Modeling"))
 

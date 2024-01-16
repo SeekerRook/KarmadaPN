@@ -9,18 +9,19 @@ from KarmadaPN import SNAKES as nets
 c1 = CPN.MultiNodeClusterPN("Cluster1")
 # pn = karmada.build()
 c2 = CPN.MultiNodeClusterPN("Cluster2")
-c3 = CPN.MultiNodeClusterPN("Cluster3")
+# c3 = CPN.MultiNodeClusterPN("Cluster3")
 
-p = P.PP_DuplicatedPN("DuplicatedPP",3)
+p = P.PP_DuplicatedPN("DuplicatedPP",2)
+# p = P.PP_DuplicatedPN("DuplicatedPP",3)
 
 karmada = PN.PNComponent("Karmada")
 karmada.add_component(p)
 karmada.add_component(c1)
 karmada.add_component(c2)
-karmada.add_component(c3)
+# karmada.add_component(c3)
 karmada.merge("DuplicatedPP_C1","Cluster1_Pending","C1_Pending")
 karmada.merge("DuplicatedPP_C2","Cluster2_Pending","C2_Pending")
-karmada.merge("DuplicatedPP_C3","Cluster3_Pending","C3_Pending")
+# karmada.merge("DuplicatedPP_C3","Cluster3_Pending","C3_Pending")
 
 karmadapn = karmada.build()
 
