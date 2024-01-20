@@ -1,5 +1,5 @@
 
-all : cluster duplicated static dynamic
+all : clean cluster duplicated static dynamic aggregated
 cluster:
 	python test_cluster.py
 
@@ -13,6 +13,10 @@ static:
 
 dynamic:
 	python test_dynamic_weights_pp.py
+
+aggregated:
+	python test_aggregated_pp.py
+
 
 clean:
 	rm *.png*

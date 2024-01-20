@@ -11,8 +11,8 @@ def PP_DuplicatedPN (name,cluster_nmber:int=2):
 
     pn.add_place(Place("Services"))
 
-    pn.add_transition(Transition("Propagate"))
-    pn.add_input("Services","Propagate",Variable("svc"))
+    pn.add_transition(Transition("Propagate",Expression("policy == 'Duplicated'")))
+    pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
     for i in range(cluster_nmber):
         pn.add_place(Place(f"C{i+1}"))
         pn.add_output(f"C{i+1}","Propagate",Expression("svc"))      
@@ -24,8 +24,8 @@ def  PP_AggregatedPN(name,cluster_nmber:int=2):
     pn.add_place(Place("Services"))
     # pn.add_place(Place("Cluster_Nodes"))
 
-    pn.add_transition(Transition("Propagate"))
-    pn.add_input("Services","Propagate",Variable("svc"))
+    pn.add_transition(Transition("Propagate",Expression("policy == 'Aggregated'")))
+    pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
 
     def w(i) :
         return f"min(\n(c{i}[1] - c{i}[0])/svc[0][1] if svc[0][1] != 0 else float('inf'),\n(c{i}[3] - c{i}[2])/svc[0][3] if svc[0][3] != 0 else float('inf'),\n(c{i}[5] - c{i}[4])/svc[0][5] if svc[0][5] != 0 else float('inf')\n) "
@@ -51,8 +51,8 @@ def  PP_StaticWeightsPN(name,cluster_nmber:int=2):
 
     pn.add_place(Place("Services"))
 
-    pn.add_transition(Transition("Propagate"))
-    pn.add_input("Services","Propagate",Variable("svc"))# svc = (Pod,(c1,c2w...),r)
+    pn.add_transition(Transition("Propagate",Expression("policy == 'Weighted_Static'")))
+    pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
     for i in range(cluster_nmber):
         pn.add_place(Place(f"C{i+1}"))
         pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],round((svc[1][{i}]/(sum(svc[1])))*svc[2]))"))      
@@ -66,8 +66,8 @@ def  PP_DynamicWeightsPN(name,cluster_nmber:int=2):
     pn.add_place(Place("Services"))
     # pn.add_place(Place("Cluster_Nodes"))
 
-    pn.add_transition(Transition("Propagate"))
-    pn.add_input("Services","Propagate",Variable("svc"))# svc = (Pod,(c1w,c2w...),replicas)
+    pn.add_transition(Transition("Propagate",Expression("policy == 'Weighted_Dynamic'")))
+    pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))# svc = (Pod,(c1w,c2w...),replicas)
     
     def w(i) :
         return f"min((c{i}[1] - c{i}[0])/svc[0][1] if svc[0][1] != 0 else float('inf'),(c{i}[3] - c{i}[2])/svc[0][3] if svc[0][3] != 0 else float('inf'),(c{i}[5] - c{i}[4])/svc[0][5] if svc[0][5] != 0 else float('inf')) "

@@ -24,7 +24,7 @@ karmada.merge("Dynamic_Weights_PP_C2","Cluster2_Pending","C2_Pending")
 
 karmadapn = karmada.build()
 
-karmadapn.set_marking(nets.Marking( Karmada_Dynamic_Weights_PP_Services=nets.MultiSet([(Service("Pod",minCPU=0.5,maxCPU=1)(),12)]),
+karmadapn.set_marking(nets.Marking( Karmada_Dynamic_Weights_PP_Services=nets.MultiSet([("Weighted_Dynamic",(Service("Pod",minCPU=0.5,maxCPU=1)(),12))]),
                         Karmada_Cluster1_Nodes=nets.MultiSet([Node("node1",3,0.512)(),Node("node2",1,0.512)()]),
                         Karmada_Cluster2_Nodes=nets.MultiSet([Node("node1",1,0.512)()]),
                         Karmada_Dynamic_Weights_PP_C1_Resource_Modeling=nets.MultiSet([(0,4,0,1.024,0,110)]),
