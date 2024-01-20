@@ -95,11 +95,13 @@ def init_state(pn,name):
 
     for i in pn.transition()  :
         print(i)    
+        if (i.modes()):
+            print (i.modes())
     print("Generating ...", end='\r')
     pn2 = pn.copy()
     pn2.remove_marking(pn2.get_marking())
-    pn2.draw(f"{name}_empty.png",trans_attr=trmt,arc_attr=amt)  
-
+    pn2.draw(f"{name}_empty.png",)#trans_attr=trmt,arc_attr=amt)  
+    
     pn.draw(f"{name}_init.png",trans_attr=trmt,arc_attr=amt)  
     print("                        ")       
     return pn
@@ -131,7 +133,7 @@ def final_state(pn,name):
     pn.draw(f"{name}_final.png",trans_attr=trmt,arc_attr=amt)
 
     final = pn.get_marking()
-    for place in final:
+    for place in sorted(final):
         print(place, len(final(place)))
         for token in final(place):
 
