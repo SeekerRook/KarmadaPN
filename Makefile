@@ -1,5 +1,5 @@
 
-all : cluster duplicated static dynamic aggregated
+all : clean cluster duplicated static dynamic aggregated
 cluster:
 	python test_cluster.py
 duplicated:
@@ -11,6 +11,9 @@ dynamic:
 aggregated:
 	python test_aggregated_pp.py
 clean:
-	rm *.png*
-	rm test_*.txt
-	rm -r test_*/
+	rm -f *.png*
+	rm -f test_*.txt
+	rm -rf test_*/
+deepclean: clean
+	rm -rf */*/__pycache__/
+	rm -rf __pycache__/
