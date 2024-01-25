@@ -1,5 +1,5 @@
 
-all : clean cluster duplicated static dynamic aggregated
+all : cluster duplicated static dynamic aggregated
 cluster:
 	python test_cluster.py
 
