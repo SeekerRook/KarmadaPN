@@ -140,3 +140,15 @@ def final_state(pn,name):
             print(f"    {token}")
 
     return pn
+
+def txt2nparray(filename):
+    mat = []
+    with open (filename) as f:
+        for line in f.readlines():
+            mat.append([int(i) for i in line.split()])
+    return np.array(mat)
+def nparray2networkx(array):
+    import networkx as nx
+    return nx.from_numpy_array(array)
+def txt2networkx(filename):
+    return(nparray2networkx(txt2nparray(filename)))
