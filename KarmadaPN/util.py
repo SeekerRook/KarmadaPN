@@ -1,5 +1,6 @@
 import numpy as np
 VERBOSE = False
+
 def printf(str,end="\n"):
     if VERBOSE:
         print(str ,end=end)
@@ -12,6 +13,12 @@ def amt (lbl,attr):
     
     attr["label"] = ""
 
+def Multiset_Serialize(ms):
+    return list(ms)
+def Marking_Serialize(m):
+    return {k:Multiset_Serialize(v) for k,v in m.items()}
+
+
 
 def explain(graph,final=0,build=False,verbose=False):
     global VERBOSE
@@ -23,21 +30,22 @@ def explain(graph,final=0,build=False,verbose=False):
     adjacency = np.zeros((final+1,final+1),dtype=int)
     for i in range(final):
         graph.goto(i)
-        states.append(graph.net.get_marking())
+        states.append(Marking_Serialize(graph.net.get_marking()))
         printf(f"{i} is succeeded by",end=" ")
         for j in graph.successors(i):
             printf(f" {j[0]} ",end=" ")
 
             adjacency[i,j[0]] = 1
         printf("!")
+    graph.goto(final)
+    states.append(Marking_Serialize(graph.net.get_marking()))
     return states,adjacency
 
 
 
 def graph_test(pn,name = "",timer = 10, tmpimg =100, printgraph = True):
     print( "\n~~~~~~~~~~ GRAPH TEST ~~~~~~~~~~~~\n")
-    import snakes.plugins
-    snakes.plugins.load("gv","snakes.nets","nets")
+    import SNAKES as nets
     from nets import StateGraph
     import time
 
@@ -69,7 +77,12 @@ def graph_test(pn,name = "",timer = 10, tmpimg =100, printgraph = True):
     #generate adjacency matrix and state map
     import KarmadaPN.util as util
     print("Generatin Adjacency Matrix ......",end='\r')
-    map , am = util.explain(g,final)
+    lmap , am = util.explain(g,final)
+    import pickle
+    # ll = [l.__pnmldump__()for l in lmap]
+
+    pickle.dump(lmap,open(f"{name}_marking.pkl",'wb'))
+    pickle.dump(am,open(f"{name}_AM.pkl",'wb'))
     np.savetxt(f"{name}_AM.txt", am, fmt='%i', delimiter=' ', newline='\n', header='', footer='', comments='# ', encoding=None)
     print("                                  ")
 
@@ -141,14 +154,8 @@ def final_state(pn,name):
 
     return pn
 
-def txt2nparray(filename):
-    mat = []
-    with open (filename) as f:
-        for line in f.readlines():
-            mat.append([int(i) for i in line.split()])
-    return np.array(mat)
-def nparray2networkx(array):
-    import networkx as nx
-    return nx.from_numpy_array(array)
-def txt2networkx(filename):
-    return(nparray2networkx(txt2nparray(filename)))
+def pretty_print(marking):
+    for place in marking:
+        print(f"{place} {len(place)}")
+        for token in marking[place]:
+            print(f"    {token}")

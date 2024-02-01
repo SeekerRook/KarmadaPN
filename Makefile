@@ -16,6 +16,7 @@ full:
 	python test_all_policies.py
 clean:
 	rm -f *.png*
+	rm -f *.pkl*
 	rm -f test_*.txt
 	rm -rf test_*/
 deepclean: clean
