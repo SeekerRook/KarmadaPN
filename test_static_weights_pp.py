@@ -32,7 +32,7 @@ karmadapn.set_marking(nets.Marking( Karmada_Static_Weights_PP_Services=nets.Mult
 )
 # ~~~~~~~~~~~~~~~ Testing~~~~~~~~~~~~~~~~~~~~~
 
-from KarmadaPN.util import init_state, graph_test, final_state2
+from KarmadaPN.util import init_state, graph_test, final_state
 name = "test_static_weights_pp"
 
 
@@ -45,4 +45,4 @@ init_state(karmadapn,name)
 i,G = graph_test(karmadapn,name,timer=100,tmpimg=1000,printgraph=True)
 
 # Final State
-final_state2(i,G,name)
+final_state(i,G,name)

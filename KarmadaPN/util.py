@@ -130,7 +130,7 @@ def init_state(pn,name):
     print("                        ")       
     return pn
 
-def final_state(pn,name):
+def final_state_legacy(pn,name):
     try:
         import os 
         os.system(f"mkdir {name}")
@@ -164,7 +164,7 @@ def final_state(pn,name):
 
     return pn
 
-def final_state2(i,G,name):
+def final_state(i,G,name):
     from KarmadaPN.analysis import SNAKES2networkx, final_states
     graph,mapping = SNAKES2networkx(G,i,mapping=True)
     import networkx as nx
