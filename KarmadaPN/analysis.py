@@ -1,3 +1,6 @@
+###
+### Graph Generation
+###
 def txt2nparray(filename):
     import numpy as np
 
@@ -12,6 +15,10 @@ def nparray2networkx(array):
     return nx.from_numpy_array(array,create_using=nx.DiGraph)
 def txt2networkx(filename):
     return(nparray2networkx(txt2nparray(filename)))
+
+###
+### State recovery
+###
 
 def recover(state,mapping):
     return(mapping[state])

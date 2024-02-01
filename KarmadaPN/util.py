@@ -5,6 +5,11 @@ def printf(str,end="\n"):
     if VERBOSE:
         print(str ,end=end)
 
+
+###
+### SNAKES Visualization formatting
+###
+
 def trmt (lbl,attr):
     
     attr["label"] = lbl
@@ -13,13 +18,18 @@ def amt (lbl,attr):
     
     attr["label"] = ""
 
+### 
+### SNAKES objects Serialization for pickles
+###
 def Multiset_Serialize(ms):
     return list(ms)
+
 def Marking_Serialize(m):
     return {k:Multiset_Serialize(v) for k,v in m.items()}
 
-
-
+###
+### AM and mapping generation
+###
 def explain(graph,final=0,build=False,verbose=False):
     global VERBOSE
     VERBOSE = verbose
@@ -42,7 +52,9 @@ def explain(graph,final=0,build=False,verbose=False):
     return states,adjacency
 
 
-
+###
+### pn testing functions
+###
 def graph_test(pn,name = "",timer = 10, tmpimg =100, printgraph = True):
     print( "\n~~~~~~~~~~ GRAPH TEST ~~~~~~~~~~~~\n")
     import SNAKES as nets
@@ -96,7 +108,6 @@ def has_firable_trans(pn):
             break
     return res
 
-
 def init_state(pn,name):
     print( "\n~~~~~~~~~~ Init State ~~~~~~~~~~~~\n")
 
@@ -118,7 +129,6 @@ def init_state(pn,name):
     pn.draw(f"{name}_init.png",trans_attr=trmt,arc_attr=amt)  
     print("                        ")       
     return pn
-
 
 def final_state(pn,name):
     try:
@@ -154,6 +164,9 @@ def final_state(pn,name):
 
     return pn
 
+###
+### visualization
+###
 def pretty_print(marking):
     for place in marking:
         print(f"{place} {len(place)}")
