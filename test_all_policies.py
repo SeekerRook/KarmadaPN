@@ -56,7 +56,7 @@ karmadapn.set_marking(nets.Marking( Karmada_Services=nets.MultiSet([("Weighted_D
 )
 # ~~~~~~~~~~~~~~~ Testing~~~~~~~~~~~~~~~~~~~~~
 
-from KarmadaPN.util import init_state, graph_test, final_state
+from KarmadaPN.util import init_state, graph_test, final_state2
 name = "test_all_policies_"
 
 
@@ -66,9 +66,9 @@ init_state(karmadapn,name)
 
 #State Graph
 
-graph_test(karmadapn,name,timer=100,tmpimg=1000,printgraph=False)
+i,G = graph_test(karmadapn,name,timer=100,tmpimg=1000,printgraph=False)
 
 
 # Final State
-final_state(karmadapn,name)
+final_state2(i,G,name)
 

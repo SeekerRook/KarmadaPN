@@ -15,6 +15,16 @@ def nparray2networkx(array):
     return nx.from_numpy_array(array,create_using=nx.DiGraph)
 def txt2networkx(filename):
     return(nparray2networkx(txt2nparray(filename)))
+def SNAKES2networkx(g,i,build=False,mapping=False):
+
+    from KarmadaPN.util import explain
+    mapping,AM = explain(g,i,build=build)
+    
+    if mapping:
+        return nparray2networkx(AM),mapping
+    else:
+        return nparray2networkx(AM)     
+
 
 ###
 ### State recovery
@@ -24,4 +34,4 @@ def recover(state,mapping):
     return(mapping[state])
 
 def final_states(graph,mapping):
-    return [recover(node,mapping) for node in graph.nodes if graph.out_degree(node) == 0]
+    return {node:recover(node,mapping) for node in graph.nodes if graph.out_degree(node) == 0}

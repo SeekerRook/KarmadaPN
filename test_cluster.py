@@ -22,7 +22,7 @@ pn.set_marking(nets.Marking( Cluster1_Pending=nets.MultiSet([(Service("Pod",minC
 
 # ~~~~~~~~~~~~~~~ Testing~~~~~~~~~~~~~~~~~~~~~
 
-from KarmadaPN.util import init_state, graph_test, final_state
+from KarmadaPN.util import init_state, graph_test, final_state2
 name = "test_cluster"
 #Initial State
                         
@@ -30,9 +30,9 @@ init_state(pn,name)
 
 #State Graph
 
-graph_test(pn,name)
+i,G = graph_test(pn,name)
 
 
 # Final State
-final_state(pn,name)
+final_state2(i,G,name)
 

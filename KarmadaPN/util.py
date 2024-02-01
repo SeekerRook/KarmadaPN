@@ -98,7 +98,7 @@ def graph_test(pn,name = "",timer = 10, tmpimg =100, printgraph = True):
     np.savetxt(f"{name}_AM.txt", am, fmt='%i', delimiter=' ', newline='\n', header='', footer='', comments='# ', encoding=None)
     print("                                  ")
 
-    return i
+    return i,g
 
 def has_firable_trans(pn):
     res = False
@@ -163,6 +163,25 @@ def final_state(pn,name):
             print(f"    {token}")
 
     return pn
+
+def final_state2(i,G,name):
+    from KarmadaPN.analysis import SNAKES2networkx, final_states
+    graph,mapping = SNAKES2networkx(G,i,mapping=True)
+    import networkx as nx
+    import matplotlib.pyplot as plt
+    # nx.draw(graph)
+    # plt.show()
+    fs = final_states(graph,mapping)
+
+    for idx,i in enumerate(fs):
+        print(f"FINAL STATE {idx+1} ({i})")
+        pretty_print(fs[i])
+        G.goto(i)
+        G.net.draw(f"{name}_final{idx+1}.png",trans_attr=trmt,arc_attr=amt)
+
+
+
+
 
 ###
 ### visualization

@@ -32,19 +32,18 @@ karmadapn.set_marking(nets.Marking( Karmada_DuplicatedPP_Services=nets.MultiSet(
 )
 # ~~~~~~~~~~~~~~~ Testing~~~~~~~~~~~~~~~~~~~~~
 
-from KarmadaPN.util import init_state, graph_test, final_state
+from KarmadaPN.util import init_state, graph_test, final_state2
 name = "test_duplicate_pp_"
 
 
 #Initial State
                         
-init_state(karmadapn,"test_duplicate_pp_")
+init_state(karmadapn,name)
 
 #State Graph
 
-graph_test(karmadapn,"test_duplicate_pp_",timer=100,tmpimg=1000,printgraph=False)
+i,G = graph_test(karmadapn,name,timer=100,tmpimg=1000,printgraph=False)
 
 
 # Final State
-final_state(karmadapn,"test_duplicate_pp_")
-
+final_state2(i,G,name)
