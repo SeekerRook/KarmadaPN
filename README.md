@@ -29,6 +29,6 @@ KarmadaPN
 
 ---
 
-The library is based on [SNAKES](https//snakes.ibisc.univ-evry.fr/)  library for Petri Nets in Python.
+The library is based on [SNAKES](https://snakes.ibisc.univ-evry.fr/)  library for Petri Nets in Python.
 
 For examples see the test files
