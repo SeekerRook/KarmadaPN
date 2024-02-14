@@ -30,17 +30,40 @@ def transform(val,type,ramunit=""):
         raise ValueError(f"Unknown resource type {type}")
     pass
 
+def fromtop(config, node=""):
+    import os
+    import yaml
+    raw = os.popen(f'kubectl --kubeconfig {config} top nodes {node}').read()
+    raw2 = os.popen(f'kubectl --kubeconfig {config} get pods --field-selector spec.nodeName={node} --all-namespaces --kubeconfig {config} |wc').read()
+    pods = raw2.split()[0]
+    keys = raw.split('\n')[0].split()
+    values = raw.split('\n')[1].split()
+
+    res= {i.split("(")[0].lower():j for i,j in zip(keys,values)}    
+    res["pods"]=pods
+    return res
+       
+
+
 def get_node_resources(config):
     import os
     import yaml
     raw = os.popen(f'kubectl --kubeconfig {config} get nodes -o yaml').read()
+    
     data  = yaml.safe_load(raw)
-    return {i["metadata"]["name"]:i["status"] for i in data["items"]}
+    res = {}
+    print(data)
+    for i in data["items"]:
+        val= i["status"]
+        val ["allocated"] = fromtop(config,i["metadata"]["name"])  
+        res[i["metadata"]["name"]]= val
+    input(res)
+    return res
 
 def node_tokenize(node,ramunit=""):
     return(
         (transform(node["allocatable"]["cpu"],"cpu"),transform(node["allocatable"]["memory"],"memory",ramunit=ramunit),transform(node["allocatable"]["pods"],"pods")) 
-        , (transform(node["capacity"]["cpu"],"cpu"),transform(node["capacity"]["memory"],"memory",ramunit=ramunit),transform(node["capacity"]["pods"],"pods"))
+        , (transform(node["allocated"]["cpu"],"cpu"),transform(node["allocated"]["memory"],"memory",ramunit=ramunit),transform(node["allocated"]["pods"],"pods"))
         )
 
 def get_cluster_resources(config):
