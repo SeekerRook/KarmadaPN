@@ -3,16 +3,16 @@ def transform(val,type,ramunit=""):
     units = {
     "" : 1,#bytes
     "Ki" : 1024,
-    "Mi" : 1000**2,
-    "Gi" : 1000**3,
-    "Ti" : 1000**4,
-    "Pi" : 1000**5,
+    "Mi" : 1024**2,
+    "Gi" : 1024**3,
+    "Ti" : 1024**4,
+    "Pi" : 1024**5,
 }
     if type == "cpu":
         if val[-1] == "m":
-            return int(val[:-1])/1000
+            return float(val[:-1])/1024
         else :
-            return int(val)
+            return float(val)
     elif type == "memory" or type=="ram":
         if ramunit == "raw":
             return val
@@ -52,12 +52,12 @@ def get_node_resources(config):
     
     data  = yaml.safe_load(raw)
     res = {}
-    print(data)
+    # print(data)
     for i in data["items"]:
         val= i["status"]
         val ["allocated"] = fromtop(config,i["metadata"]["name"])  
         res[i["metadata"]["name"]]= val
-    input(res)
+    # input(res)
     return res
 
 def node_tokenize(node,ramunit=""):
