@@ -10,7 +10,7 @@ def transform(val,type,ramunit=""):
 }
     if type == "cpu":
         if val[-1] == "m":
-            return float(val[:-1])/1024
+            return float(val[:-1])/1000
         else :
             return float(val)
     elif type == "memory" or type=="ram":
