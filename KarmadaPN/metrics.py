@@ -10,9 +10,9 @@ def transform(val,type,ramunit=""):
 }
     if type == "cpu":
         if val[-1] == "m":
-            return float(val[:-1])/1000
+            return int(val[:-1])
         else :
-            return float(val)
+            return int(val)*1000
     elif type == "memory" or type=="ram":
         if ramunit == "raw":
             return val
@@ -30,16 +30,20 @@ def transform(val,type,ramunit=""):
         raise ValueError(f"Unknown resource type {type}")
     pass
 
-def fromtop(config, node=""):
+def fromdesc(config, node=""):
     import os
     import yaml
-    raw = os.popen(f'kubectl --kubeconfig {config} top nodes {node}').read()
-    raw2 = os.popen(f'kubectl --kubeconfig {config} get pods --field-selector spec.nodeName={node} --all-namespaces --kubeconfig {config} |wc').read()
-    pods = raw2.split()[0]
-    keys = raw.split('\n')[0].split()
-    values = raw.split('\n')[1].split()
+    raw = os.popen(f"kubectl --kubeconfig {config} describe node {node} | grep % |"+" awk '{print $1 \" \" $2 \" \" $4 }'").read()
+    # raw2 = os.popen(f'kubectl --kubeconfig {config} get pods --field-selector spec.nodeName={node} --all-namespaces --kubeconfig {config} |wc').read()
+    # pods = raw2.split()[0]
+    # data = [raw.split('\n')]
+    data = [i.split() for i in raw.split('\n') if i.split()!=[]]
+    keys = [i[0] for i in data]
+    values = [i[1] for i in data]
+    pods = keys.index("cpu")
+    # values = raw.split('\n')[1].split()
 
-    res= {i.split("(")[0].lower():j for i,j in zip(keys,values)}    
+    res= {i:j for i,j in zip(keys,values)}    
     res["pods"]=pods
     return res
        
@@ -54,8 +58,10 @@ def get_node_resources(config):
     res = {}
     # print(data)
     for i in data["items"]:
+        print (f"Examining node : {i['metadata']['name']}")
         val= i["status"]
-        val ["allocated"] = fromtop(config,i["metadata"]["name"])  
+        print(val["allocatable"])
+        val ["allocated"] = fromdesc(config,i["metadata"]["name"])  
         res[i["metadata"]["name"]]= val
     # input(res)
     return res

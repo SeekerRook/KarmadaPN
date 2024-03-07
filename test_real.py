@@ -1,4 +1,4 @@
-from KarmadaPN.metrics import get_cluster_resources, get_node_resources ,cluster_tokenize,node_tokenize
+from KarmadaPN.metrics import get_cluster_resources, get_node_resources ,cluster_tokenize,node_tokenize,transform
 
 from KarmadaPN.PNS import ClusterPN as CPN
 from KarmadaPN.PNS import Propagation as P
@@ -30,15 +30,20 @@ for c in clusters:
     print()
     # c = "cluster2"
     
-    try:
+    # try:
+    if True:
         nodes = get_node_resources(f"/home/chris/.kube/{c}")
-    except:
-        nodes = []
+    # except Exception as e:
+
+    #     print(f"EROOR FINDING NODES using kubeconfig /home/chris/.kube/{c}")
+    #     print(e)
+    #     nodes = []
     clusternodes[c]= []
 
     for n in nodes:
         print(f"    Getting metrics for node {n}")
-        allocatable , allocated= node_tokenize(nodes[n],ramunit="Mi")
+        print (nodes[n]["allocated"])
+        allocatable , allocated= node_tokenize(nodes[n],ramunit="")
         print(f"    {n}: Allocatable  (cpu,memory,pods) = {allocatable}")
         # allocated = clusters[c]["allocated"]
         print(f"    {n}: Allocated   (cpu,memory,pods) = {allocated}")
@@ -59,8 +64,8 @@ for c in clusters:
 
 if "cluster1" not in   clusters:
     clusters["cluster1"] = {}
-# if "cluster2" not in   clusters:
-#     clusters["cluster2"] = {}
+if "cluster2" not in   clusters:
+    clusters["cluster2"] = {}
  
 
 
@@ -77,7 +82,7 @@ if "cluster1" not in resourcemodellings:
 
 karmada = PN.PNComponent("Karmada")
 
-p = P.PP_DynamicWeightsPN("Dynamic_Weights_PP",len(clusters))
+p = P.PP_StaticWeightsPN("Static_Weights_PP",len(clusters))
 karmada.add_component(p)
 
 for idx,c in enumerate(clusters):
@@ -86,21 +91,34 @@ for idx,c in enumerate(clusters):
     karmada.add_component(c1)
     # karmada.add_component(c2)
     # karmada.add_component(c3)
-    karmada.merge(f"Dynamic_Weights_PP_C{idx+1}",f"{c}_Pending",f"C{idx+1}_Pending")
-    # karmada.merge("Dynamic_Weights_PP_C2","Cluster2_Pending","C2_Pending")
+    karmada.merge(f"Static_Weights_PP_C{idx+1}",f"{c}_Pending",f"C{idx+1}_Pending")
+    # karmada.merge("Static_Weights_PP_C2","Cluster2_Pending","C2_Pending")
     # karmada.merge("Static_Weights_PP","Cluster3_Pending")
 
 karmadapn = karmada.build()
 
 
-karmadapn.set_marking(nets.Marking( Karmada_Dynamic_Weights_PP_Services=nets.MultiSet([("Weighted_Dynamic",(Service("Pod",minCPU=0.5,maxCPU=1)(),12))]),
+karmadapn.set_marking(nets.Marking( Karmada_Static_Weights_PP_Services=nets.MultiSet([("Weighted_Static",(Service("test2",minCPU=transform("200m","cpu"),maxCPU=1)(),(1,2),6))]),
                         Karmada_cluster1_Nodes=nets.MultiSet(clusternodes["cluster1"]),
-                        # Karmada_cluster2_Nodes=nets.MultiSet(clusternodes["cluster2"]),
+                        Karmada_cluster2_Nodes=nets.MultiSet(clusternodes["cluster2"]),
                         # Karmada_Cluster2_Nodes=nets.MultiSet([Node("node1",1,0.512)()]),
-                        Karmada_Dynamic_Weights_PP_C1_Resource_Modeling=nets.MultiSet([resourcemodellings["cluster1"]]),
-                        # Karmada_Dynamic_Weights_PP_C2_Resource_Modeling=nets.MultiSet([resourcemodellings["cluster2"]])
+                        Karmada_Static_Weights_PP_C1_Resource_Modeling=nets.MultiSet([resourcemodellings["cluster1"]]),
+                        Karmada_Static_Weights_PP_C2_Resource_Modeling=nets.MultiSet([resourcemodellings["cluster2"]])
                         ),                      
 )
 # ~~~~~~~~~~~~~~~ Testing~~~~~~~~~~~~~~~~~~~~~
-from KarmadaPN.util import init_state
-init_state(karmadapn,"test_real")
+from KarmadaPN.util import init_state,graph_test,final_state
+name = "test_real"
+
+
+#Initial State
+                        
+init_state(karmadapn,name)
+
+#State Graph
+
+i,G = graph_test(karmadapn,name,timer=100,tmpimg=1000,printgraph=False)
+
+
+# Final State
+final_state(i,G,name)

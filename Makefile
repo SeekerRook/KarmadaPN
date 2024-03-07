@@ -14,6 +14,8 @@ multipolicy:
 	python test_multi_policy.py
 full:
 	python test_all_policies.py
+real:
+	python test_real.py
 clean:
 	rm -f *.png*
 	rm -f *.pkl*
