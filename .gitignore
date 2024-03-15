@@ -6,3 +6,7 @@ __pycache__/*
 __pycache__/
 */__pycache__/*
 */__pycache__/
+KarmadaPN.egg-info/*
+KarmadaPN.egg-info
+build/*
+build
