@@ -1,5 +1,5 @@
 # Karmada PN
-A Python library for modelling Multi-Cluster Infrastructure based on Karmada using PetriNets
+A Python library for modelling Multi-Cluster Infrastructures based on Karmada using PetriNets
 
 ---
 
