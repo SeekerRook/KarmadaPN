@@ -37,11 +37,11 @@ For examples see the [test files](/tests)
 
 
 ## INSTALLATION
-run
+On the root directory run
 ```
 make pypi
 ```
-or on the root directory run
+or 
 ```
 pip install .
 ```
