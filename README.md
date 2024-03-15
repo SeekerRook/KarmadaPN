@@ -1,5 +1,5 @@
 # Karmada PN
-A Python library for modelling Multi-Cluster Infrastructures based on Karmada using PetriNets
+A Python library for modeling Multi-Cluster Infrastructures based on Karmada using PetriNets
 
 ---
 
@@ -22,7 +22,9 @@ KarmadaPN
 ├── PN                              implements modular Petri Net Creation
 │    └── PNComponent                General Customizable PN that can be combined with other PNComponents
 │
-└── util                             Utility Functions for testing and explainability. Not needed for PN implementation
+├── util                            Utility Functions for testing and explainability. Not needed for PN implementation
+├── analysis                        Functions for analysing PNS, such as generating Graphs of Markings or finding possible stable stages 
+└── metrics                         Functions for creating Dynamic Models based on live metric from kubectl        
 
 ```
 \**[more about Karmada Propagation Policies](https://karmada.io/docs/userguide/scheduling/resource-propagating/#multiple-strategies-of-replica-scheduling)*
@@ -31,4 +33,4 @@ KarmadaPN
 
 The library is based on [SNAKES](https://snakes.ibisc.univ-evry.fr/)  library for Petri Nets in Python.
 
-You can find examples  [HERE](/examples)
+For examples see the [test files](/tests)
