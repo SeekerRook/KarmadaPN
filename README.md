@@ -1,5 +1,5 @@
 # Karmada PN
-a python library to simulate Karmada Multi Cluster Deployments using PetriNets
+A Python library for modelling Multi-Cluster Infrastructure based on Karmada using PetriNets
 
 ---
 
@@ -25,7 +25,7 @@ KarmadaPN
 └── util                             Utility Functions for testing and explainability. Not needed for PN implementation
 
 ```
-\**[Karmada Propagation Policies](https://karmada.io/docs/userguide/scheduling/resource-propagating/#multiple-strategies-of-replica-scheduling)*
+\**[more about Karmada Propagation Policies](https://karmada.io/docs/userguide/scheduling/resource-propagating/#multiple-strategies-of-replica-scheduling)*
 
 ---
 
