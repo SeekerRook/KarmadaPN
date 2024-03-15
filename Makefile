@@ -1,5 +1,5 @@
 
-all : clean cluster duplicated static dynamic aggregated multipolicy full
+all :pypi clean cluster duplicated static dynamic aggregated multipolicy full
 cluster:
 	python examples/test_cluster.py
 duplicated:
@@ -24,3 +24,5 @@ clean:
 deepclean: clean
 	rm -rf */*/__pycache__/
 	rm -rf __pycache__/
+pypi:
+	pip install .
