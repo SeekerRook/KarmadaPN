@@ -71,13 +71,13 @@ if "cluster2" not in   clusters:
 
 if "cluster1" not in clusternodes:
     clusternodes["cluster1"] = ()
-# if "cluster2" not in clusternodes:
-#     clusternodes["cluster2"] = ()
+if "cluster2" not in clusternodes:
+    clusternodes["cluster2"] = ()
 
 if "cluster1" not in resourcemodellings:
     resourcemodellings["cluster1"] = ()
-# if "cluster2" not in resourcemodellings:
-#     resourcemodellings["cluster2"] = ()
+if "cluster2" not in resourcemodellings:
+    resourcemodellings["cluster2"] = ()
  
 
 karmada = PN.PNComponent("Karmada")
@@ -98,7 +98,7 @@ for idx,c in enumerate(clusters):
 karmadapn = karmada.build()
 
 
-karmadapn.set_marking(nets.Marking( Karmada_Static_Weights_PP_Services=nets.MultiSet([("Weighted_Static",(Service("test2",minCPU=transform("200m","cpu"),maxCPU=1)(),(1,2),6))]),
+karmadapn.set_marking(nets.Marking( Karmada_Static_Weights_PP_Services=nets.MultiSet([("Weighted_Static",(Service("test2",minCPU=transform("200m","cpu"),maxCPU=1)(),(1,2),7))]),
                         Karmada_cluster1_Nodes=nets.MultiSet(clusternodes["cluster1"]),
                         Karmada_cluster2_Nodes=nets.MultiSet(clusternodes["cluster2"]),
                         # Karmada_Cluster2_Nodes=nets.MultiSet([Node("node1",1,0.512)()]),
