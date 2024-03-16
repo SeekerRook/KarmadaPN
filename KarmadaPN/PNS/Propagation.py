@@ -6,6 +6,23 @@ from ..Tokens import Service, Node
 from nets import *
 
 from os import system
+def staticsplit(replicas, weights, idx):
+    from math import ceil
+    suma = sum(weights)
+    sweights = sorted(weights,reverse=True)
+    res = [0 for _ in weights]
+    rest = 0
+    for w in sweights:
+
+        a = ceil((replicas-rest)*w/sum(sweights[sweights.index(w):]))
+        rest += a 
+        res[weights.index(w)]= a
+    
+        # input(f" a = {a} for w = {w},res = {res}, rest = {rest}")
+    # input(res[idx])
+    return res[idx]
+
+
 def PP_DuplicatedPN (name,cluster_nmber:int=2):
     pn = PNComponent(name)
 
@@ -48,6 +65,7 @@ def  PP_AggregatedPN(name,cluster_nmber:int=2):
 
 def  PP_StaticWeightsPN(name,cluster_nmber:int=2):
     pn = PNComponent(name)
+    pn.globals.append("from KarmadaPN.PNS.Propagation import staticsplit as split")
 
     pn.add_place(Place("Services"))
 
@@ -55,7 +73,7 @@ def  PP_StaticWeightsPN(name,cluster_nmber:int=2):
     pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
     for i in range(cluster_nmber):
         pn.add_place(Place(f"C{i+1}"))
-        pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],round((svc[1][{i}]/(sum(svc[1])))*svc[2]))"))      
+        pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],split(svc[2],svc[1],{i}))"))      
     return pn
 
 

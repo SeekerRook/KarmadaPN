@@ -24,7 +24,7 @@ karmada.merge("Static_Weights_PP_C2","Cluster2_Pending","C2_Pending")
 
 karmadapn = karmada.build()
 
-karmadapn.set_marking(nets.Marking( Karmada_Static_Weights_PP_Services=nets.MultiSet([("Weighted_Static",(Service("Pod",minCPU=0.5,maxCPU=1)(),(4,5),12))]),
+karmadapn.set_marking(nets.Marking( Karmada_Static_Weights_PP_Services=nets.MultiSet([("Weighted_Static",(Service("Pod",minCPU=0.2,maxCPU=1)(),(2,1),5))]),
                         Karmada_Cluster1_Nodes=nets.MultiSet([Node("node1",3,0.512)(),Node("node2",1,0.512)()]),
                         Karmada_Cluster2_Nodes=nets.MultiSet([Node("node1",4,0.512)()]),
                         # Karmada_Cluster3_Nodes=nets.MultiSet([Node("node1",1,0.512)(),Node("node2",1,0.512)()])
