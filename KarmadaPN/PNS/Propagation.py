@@ -8,15 +8,20 @@ from nets import *
 from os import system
 def staticsplit(replicas, weights, idx):
     from math import ceil
+    import numpy as np
     suma = sum(weights)
     sweights = sorted(weights,reverse=True)
     res = [0 for _ in weights]
     rest = 0
-    for w in sweights:
+    indexes = [i for i, x in sorted(enumerate(weights), key=lambda x: x[1],reverse=True)]
+    # print(weights)
+    # print(sweights)
+    # print(indexes)
+    for i,w in enumerate(sweights):
 
-        a = ceil((replicas-rest)*w/sum(sweights[sweights.index(w):]))
+        a = ceil((replicas-rest)*w/sum(sweights[i:]))
         rest += a 
-        res[weights.index(w)]= a
+        res[indexes[i]]= a
     
         # input(f" a = {a} for w = {w},res = {res}, rest = {rest}")
     # input(res[idx])

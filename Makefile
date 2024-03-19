@@ -24,5 +24,7 @@ clean:
 deepclean: clean
 	rm -rf */*/__pycache__/
 	rm -rf __pycache__/
+	rm -rf KarmadaPN.egg-info/
+	rm -rf build/
 pypi:
 	pip install .
