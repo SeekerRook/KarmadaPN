@@ -22,6 +22,7 @@ KarmadaPN
 ├── PN                              implements modular Petri Net Creation
 │    └── PNComponent                General Customizable PN that can be combined with other PNComponents
 │
+├── Functions                       Necessary functions for the implementation of Expressions of some Petri Nets.
 ├── util                            Utility Functions for testing and explainability. Not needed for PN implementation
 ├── analysis                        Functions for analysing PNS, such as generating Graphs of Markings or finding possible stable stages 
 └── metrics                         Functions for creating Dynamic Models based on live metric from kubectl        
