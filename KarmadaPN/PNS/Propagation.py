@@ -42,9 +42,6 @@ def aggregated(service, clusters, idx):
 
     clusters = sorted([(i+1,(w[i])) for i in range(cluster_number)],key=lambda x : x[1], reverse=True)
 
-    print(clusters)
-    print(c)
-    print(svc)
     x = max(min(svc[1]-sum([x[1] for x in clusters][:[x[0] for x in clusters].index(idx)]),w[idx-1]),0)
 
     return x
