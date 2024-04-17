@@ -34,9 +34,8 @@ def MultiNodeClusterPN(name,pending=[],allocated=[],available=[],running=[],mode
         return pn
     else:
         pn = PNComponent(name)
-        pn.globals.append("from KarmadaPN.Tokens import Service")
-        pn.globals.append("from KarmadaPN.Tokens import Node")
         pn.globals.append("from KarmadaPN.Functions import Update")
+        pn.globals.append("from KarmadaPN.Functions import Add")
         #Places
         pn.add_place(Place("Pending"))
         pn.add_place(Place("Running"))
@@ -45,7 +44,7 @@ def MultiNodeClusterPN(name,pending=[],allocated=[],available=[],running=[],mode
         pn.add_place(Place("Nodes"))
 
         # pn.add_transition(Transition("In-Cluster_Placement",Expression("KarmadaPN.ClusterPN.f(pod,mincpu,maxcpu,minram,maxram,Ncpu,ncpu,Nram,nram,Nid,nid)")))
-        pn.add_transition(Transition("In-Cluster_Placement",Expression("svc[1] > 0 and Node.from_tuple(node).add(Service.from_tuple(svc[0]))")))
+        pn.add_transition(Transition("In-Cluster_Placement",Expression("svc[1] > 0 and Add(node,svc[0])")))
         pn.add_input("Pending","In-Cluster_Placement",Variable("svc"))
         pn.add_output("Running","In-Cluster_Placement",Expression("svc[0]"))  
         pn.add_output("Pending","In-Cluster_Placement",Expression("(svc[0],svc[1]-1)"))  

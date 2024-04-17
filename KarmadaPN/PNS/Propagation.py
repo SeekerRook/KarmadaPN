@@ -26,13 +26,13 @@ def fi_static(replicas, weights, idx):
     
 def fi_dynamic(svc, c, idx):
     from ..Functions import Available_replicas as AR
-    cluster_number = len(clusters)
+    cluster_number = len(c)
     weights = [AR(c[i],svc[0]) for i in range(cluster_number)]
     return fi_static(svc[1],weights,idx-1)
 
 def fi_aggregated(svc, c, idx):
     from ..Functions import Available_replicas as AR
-    cluster_number = len(clusters)    
+    cluster_number = len(c)    
     w = [ AR(c[i],svc[0]) for i in range(cluster_number)]
     clusters = sorted([(i+1,(w[i])) for i in range(cluster_number)],key=lambda x : x[1], reverse=True)
     x = max(min(svc[1]-sum([x[1] for x in clusters][:[x[0] for x in clusters].index(idx)]),w[idx-1]),0)
@@ -90,12 +90,12 @@ def  PP_StaticWeightsPN(name,cluster_number:int=2):
 
     pn.add_place(Place("Services"))
 
-    pn.add_transition(Transition("Propagate",Expression("policy == 'Weighted_[i]'")))
+    pn.add_transition(Transition("Propagate",Expression("policy == 'Weighted_Static'")))
 
     pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
 
     for i in range(cluster_number):
-        
+
         pn.add_place(Place(f"C{i+1}"))
         pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fs(svc[2],svc[1],{i}))"))    
 

@@ -3,7 +3,16 @@ def Update(node,svc):
 
     return Node.from_tuple(node).update(Service.from_tuple(svc))()
 
+def Add(node,svc):
+    from .Tokens import Node , Service
+
+    node = Node.from_tuple(node)
+    svc = Service.from_tuple(svc)
+    return (node.totalCPU - node.allocatedCPU >= svc.minCPU )and(node.totalRAM - node.allocatedRAM >= svc.minRAM)and( node.maxPods==0 or node.maxPods - node.runningPods >= svc.minPods )
+
+
 def Update_rm(rm,svc,replicas):
+    
     return ( rm[0] + svc[1]*replicas, rm[1] , rm[2] + svc[3]*replicas, rm[3],rm[4] + svc[5]*replicas, rm[5]   )
 
 

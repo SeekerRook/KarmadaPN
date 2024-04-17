@@ -1,7 +1,7 @@
 from KarmadaPN.PNS import ClusterPN as CPN
 from KarmadaPN.PNS import Propagation as P
 from KarmadaPN import PN as PN
-from KarmadaPN.Tokens import Service, Node
+from KarmadaPN.Tokens import Service, Node, ResourceModelling
 from KarmadaPN import SNAKES as nets
 
 # ~~~~~~~~~~ PN Generation ~~~~~~~~~~
@@ -27,8 +27,8 @@ karmadapn = karmada.build()
 karmadapn.set_marking(nets.Marking( Karmada_Dynamic_Weights_PP_Services=nets.MultiSet([("Weighted_Dynamic",(Service("Pod",minCPU=0.5,maxCPU=1)(),12))]),
                         Karmada_Cluster1_Nodes=nets.MultiSet([Node("node1",3,0.512)(),Node("node2",1,0.512)()]),
                         Karmada_Cluster2_Nodes=nets.MultiSet([Node("node1",1,0.512)()]),
-                        Karmada_Dynamic_Weights_PP_C1_Resource_Modeling=nets.MultiSet([(0,4,0,1.024,0,110)]),
-                        Karmada_Dynamic_Weights_PP_C2_Resource_Modeling=nets.MultiSet([(0,1,0,0.512,0,110)])
+                        Karmada_Dynamic_Weights_PP_C1_Resource_Modeling=nets.MultiSet([ResourceModelling(totalCPU=4,totalRAM=1.024)()]),
+                        Karmada_Dynamic_Weights_PP_C2_Resource_Modeling=nets.MultiSet([ResourceModelling(totalCPU=1,totalRAM=0.512)()])
                         ),                      
 )
 # ~~~~~~~~~~~~~~~ Testing~~~~~~~~~~~~~~~~~~~~~
