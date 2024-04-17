@@ -23,6 +23,7 @@ clean:
 	rm -rf test_*/
 deepclean: clean
 	rm -rf */*/__pycache__/
+	rm -rf */__pycache__/
 	rm -rf __pycache__/
 	rm -rf KarmadaPN.egg-info/
 	rm -rf build/
