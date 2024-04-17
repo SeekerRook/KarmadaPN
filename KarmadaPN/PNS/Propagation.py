@@ -8,7 +8,7 @@ from nets import *
 from os import system
 
 # transition functions
-def static(replicas, weights, idx):
+def fi_static(replicas, weights, idx):
     from math import ceil
     import numpy as np
     suma = sum(weights)
@@ -23,22 +23,26 @@ def static(replicas, weights, idx):
         res[indexes[i]]= a
 
     return res[idx]
-def dynamic(service, clusters, idx):
+    
+def fi_dynamic(service, clusters, idx):
+    from KarmadaPN.util import Available_replicas as AR
+
     svc = service
     cluster_number = len(clusters)
  
        
     c = clusters
-    weights = [min((c[i][1] - c[i][0])/svc[0][1] if svc[0][1] != 0 else float('inf'),(c[i][3] - c[i][2])/svc[0][3] if svc[0][3] != 0 else float('inf'),(c[i][5] - c[i][4])/svc[0][5] if svc[0][5] != 0 else float('inf')) for i in range(cluster_number)]
-    return static(svc[1],weights,idx-1)
+    weights = [AR(c[i],svc[0]) for i in range(cluster_number)]
+    return fi_static(svc[1],weights,idx-1)
 
-def aggregated(service, clusters, idx):
+def fi_aggregated(service, clusters, idx):
+    from KarmadaPN.util import Available_replicas as AR
     svc = service
     cluster_number = len(clusters)
     
     c = clusters  
     
-    w = [ min((c[i][1] - c[i][0])/svc[0][1] if svc[0][1] != 0 else float('inf'),(c[i][3] - c[i][2])/svc[0][3] if svc[0][3] != 0 else float('inf'),(c[i][5] - c[i-1][4])/svc[0][5] if svc[0][5] != 0 else float('inf')) for i in range(cluster_number)]
+    w = [ AR(c[i],svc[0]) for i in range(cluster_number)]
 
     clusters = sorted([(i+1,(w[i])) for i in range(cluster_number)],key=lambda x : x[1], reverse=True)
 
@@ -49,6 +53,7 @@ def aggregated(service, clusters, idx):
 # petri nets
 
 def PP_DuplicatedPN (name,cluster_number:int=2):
+    
     pn = PNComponent(name)
 
     pn.add_place(Place("Services"))
@@ -62,7 +67,7 @@ def PP_DuplicatedPN (name,cluster_number:int=2):
 
 def  PP_AggregatedPN(name,cluster_number:int=2):
     pn = PNComponent(name)
-    pn.globals.append("from KarmadaPN.PNS.Propagation import aggregated as r")
+    pn.globals.append("from KarmadaPN.PNS.Propagation import fi_aggregated as fa")
     pn.globals.append("from KarmadaPN.util import Update_rm")
 
     pn.add_place(Place("Services"))
@@ -77,16 +82,16 @@ def  PP_AggregatedPN(name,cluster_number:int=2):
         pn.add_place(Place(f"C{i+1}_Resource_Modeling"))
 
         pn.add_input(f"C{i+1}_Resource_Modeling","Propagate",Variable(f"c{i+1}"))
-        pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"Update_rm(c{i+1},svc[0],r(svc,{clusters},{i+1}))"))
+        pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"Update_rm(c{i+1},svc[0],fa(svc,{clusters},{i+1}))"))
         # pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"(c{i+1}[0]+svc[0][1]*(r(svc,{clusters},{i+1})),c{i+1}[1],c{i+1}[2]+svc[0][3]*(r(svc,{clusters},{i+1})),c{i+1}[3],c{i+1}[4]+svc[0][5]*(r(svc,{clusters},{i+1})),c{i+1}[5])"))
 
         pn.add_place(Place(f"C{i+1}"))
-        pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],r(svc,{clusters},{i+1}))"))       
+        pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fa(svc,{clusters},{i+1}))"))       
     return pn
 
 def  PP_StaticWeightsPN(name,cluster_number:int=2):
     pn = PNComponent(name)
-    pn.globals.append("from KarmadaPN.PNS.Propagation import static as split")
+    pn.globals.append("from KarmadaPN.PNS.Propagation import fi_static as fs")
 
     pn.add_place(Place("Services"))
 
@@ -94,14 +99,14 @@ def  PP_StaticWeightsPN(name,cluster_number:int=2):
     pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
     for i in range(cluster_number):
         pn.add_place(Place(f"C{i+1}"))
-        pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],split(svc[2],svc[1],{i}))"))      
+        pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fs(svc[2],svc[1],{i}))"))      
     return pn
 
 
 def  PP_DynamicWeightsPN(name,cluster_number:int=2):
     
     pn = PNComponent(name)
-    pn.globals.append("from KarmadaPN.PNS.Propagation import dynamic as d")
+    pn.globals.append("from KarmadaPN.PNS.Propagation import fi_dynamic as fd")
     pn.globals.append("from KarmadaPN.util import Update_rm")
 
     pn.add_place(Place("Services"))
@@ -115,9 +120,9 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2):
         pn.add_place(Place(f"C{i+1}_Resource_Modeling"))
 
         pn.add_input(f"C{i+1}_Resource_Modeling","Propagate",Variable(f"c{i+1}"))
-        pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"""Update_rm(c{i+1},svc[0],d(svc,{clusters},{i+1}))"""))
+        pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"""Update_rm(c{i+1},svc[0],fd(svc,{clusters},{i+1}))"""))
         # pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"""(c{i+1}[0]+svc[0][1]*(d(svc,{clusters},{i+1})),c{i+1}[1],c{i+1}[2]+svc[0][3]*(d(svc,{clusters},{i+1})),c{i+1}[3],c{i+1}[4]+svc[0][5]*(d(svc,{clusters},{i+1})),c{i+1}[5])"""))
 
         pn.add_place(Place(f"C{i+1}"))
-        pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],d(svc,{clusters},{i+1}))"))      
+        pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fd(svc,{clusters},{i+1}))"))      
     return pn
