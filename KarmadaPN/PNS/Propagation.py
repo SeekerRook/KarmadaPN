@@ -63,6 +63,7 @@ def PP_DuplicatedPN (name,cluster_number:int=2):
 def  PP_AggregatedPN(name,cluster_number:int=2):
     pn = PNComponent(name)
     pn.globals.append("from KarmadaPN.PNS.Propagation import aggregated as r")
+    pn.globals.append("from KarmadaPN.util import Update_rm")
 
     pn.add_place(Place("Services"))
     # pn.add_place(Place("Cluster_Nodes"))
@@ -76,7 +77,8 @@ def  PP_AggregatedPN(name,cluster_number:int=2):
         pn.add_place(Place(f"C{i+1}_Resource_Modeling"))
 
         pn.add_input(f"C{i+1}_Resource_Modeling","Propagate",Variable(f"c{i+1}"))
-        pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"(c{i+1}[0]+svc[0][1]*(r(svc,{clusters},{i+1})),c{i+1}[1],c{i+1}[2]+svc[0][3]*(r(svc,{clusters},{i+1})),c{i+1}[3],c{i+1}[4]+svc[0][5]*(r(svc,{clusters},{i+1})),c{i+1}[5])"))
+        pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"Update_rm(c{i+1},svc[0],r(svc,{clusters},{i+1}))"))
+        # pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"(c{i+1}[0]+svc[0][1]*(r(svc,{clusters},{i+1})),c{i+1}[1],c{i+1}[2]+svc[0][3]*(r(svc,{clusters},{i+1})),c{i+1}[3],c{i+1}[4]+svc[0][5]*(r(svc,{clusters},{i+1})),c{i+1}[5])"))
 
         pn.add_place(Place(f"C{i+1}"))
         pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],r(svc,{clusters},{i+1}))"))       
@@ -100,6 +102,7 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2):
     
     pn = PNComponent(name)
     pn.globals.append("from KarmadaPN.PNS.Propagation import dynamic as d")
+    pn.globals.append("from KarmadaPN.util import Update_rm")
 
     pn.add_place(Place("Services"))
     # pn.add_place(Place("Cluster_Nodes"))
@@ -112,7 +115,8 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2):
         pn.add_place(Place(f"C{i+1}_Resource_Modeling"))
 
         pn.add_input(f"C{i+1}_Resource_Modeling","Propagate",Variable(f"c{i+1}"))
-        pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"""(c{i+1}[0]+svc[0][1]*(d(svc,{clusters},{i+1})),c{i+1}[1],c{i+1}[2]+svc[0][3]*(d(svc,{clusters},{i+1})),c{i+1}[3],c{i+1}[4]+svc[0][5]*(d(svc,{clusters},{i+1})),c{i+1}[5])"""))
+        pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"""Update_rm(c{i+1},svc[0],d(svc,{clusters},{i+1}))"""))
+        # pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"""(c{i+1}[0]+svc[0][1]*(d(svc,{clusters},{i+1})),c{i+1}[1],c{i+1}[2]+svc[0][3]*(d(svc,{clusters},{i+1})),c{i+1}[3],c{i+1}[4]+svc[0][5]*(d(svc,{clusters},{i+1})),c{i+1}[5])"""))
 
         pn.add_place(Place(f"C{i+1}"))
         pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],d(svc,{clusters},{i+1}))"))      

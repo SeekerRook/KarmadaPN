@@ -181,6 +181,8 @@ def final_state(i,G,name):
 
 
 
+def Update_rm(rm,svc,replicas):
+    return ( rm[0] + svc[1]*replicas, rm[1] , rm[2] + svc[3]*replicas, rm[3],rm[4] + svc[5]*replicas, rm[5]   )
 
 
 ###
