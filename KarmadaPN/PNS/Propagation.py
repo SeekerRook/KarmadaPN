@@ -25,7 +25,7 @@ def fi_static(replicas, weights, idx):
     return res[idx]
     
 def fi_dynamic(service, clusters, idx):
-    from KarmadaPN.util import Available_replicas as AR
+    from ..Functions import Available_replicas as AR
 
     svc = service
     cluster_number = len(clusters)
@@ -36,7 +36,7 @@ def fi_dynamic(service, clusters, idx):
     return fi_static(svc[1],weights,idx-1)
 
 def fi_aggregated(service, clusters, idx):
-    from KarmadaPN.util import Available_replicas as AR
+    from ..Functions import Available_replicas as AR
     svc = service
     cluster_number = len(clusters)
     
@@ -68,7 +68,7 @@ def PP_DuplicatedPN (name,cluster_number:int=2):
 def  PP_AggregatedPN(name,cluster_number:int=2):
     pn = PNComponent(name)
     pn.globals.append("from KarmadaPN.PNS.Propagation import fi_aggregated as fa")
-    pn.globals.append("from KarmadaPN.util import Update_rm")
+    pn.globals.append("from KarmadaPN.Functions import Update_rm")
 
     pn.add_place(Place("Services"))
 
@@ -105,7 +105,7 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2):
     
     pn = PNComponent(name)
     pn.globals.append("from KarmadaPN.PNS.Propagation import fi_dynamic as fd")
-    pn.globals.append("from KarmadaPN.util import Update_rm")
+    pn.globals.append("from KarmadaPN.Functions import Update_rm")
 
     pn.add_place(Place("Services"))
     clusters = "[" + ','.join([f'c{i+1}' for i in range(cluster_number)]) + "]"

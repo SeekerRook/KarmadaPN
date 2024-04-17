@@ -7,8 +7,7 @@ from nets import *
 
 from os import system
 
-# def f(pod,mincpu,maxcpu,minram,maxram,Ncpu,ncpu,Nram,nram,Nid,nid):
-#     return (nid==Nid and minram <= Nram-nram and mincpu <= Ncpu-ncpu)
+
 def MultiNodeClusterPN(name,pending=[],allocated=[],available=[],running=[],mode=""):
     if mode == "legacy": #TODO remove
         pn = PNComponent(name)
@@ -37,7 +36,7 @@ def MultiNodeClusterPN(name,pending=[],allocated=[],available=[],running=[],mode
         pn = PNComponent(name)
         pn.globals.append("from KarmadaPN.Tokens import Service")
         pn.globals.append("from KarmadaPN.Tokens import Node")
-        pn.globals.append("from KarmadaPN.Tokens import Update")
+        pn.globals.append("from KarmadaPN.Functions import Update")
         #Places
         pn.add_place(Place("Pending"))
         pn.add_place(Place("Running"))
