@@ -34,15 +34,10 @@ def fromdesc(config, node=""):
     import os
     import yaml
     raw = os.popen(f"kubectl --kubeconfig {config} describe node {node} | grep % |"+" awk '{print $1 \" \" $2 \" \" $4 }'").read()
-    # raw2 = os.popen(f'kubectl --kubeconfig {config} get pods --field-selector spec.nodeName={node} --all-namespaces --kubeconfig {config} |wc').read()
-    # pods = raw2.split()[0]
-    # data = [raw.split('\n')]
     data = [i.split() for i in raw.split('\n') if i.split()!=[]]
     keys = [i[0] for i in data]
     values = [i[1] for i in data]
     pods = keys.index("cpu")
-    # values = raw.split('\n')[1].split()
-
     res= {i:j for i,j in zip(keys,values)}    
     res["pods"]=pods
     return res
@@ -52,8 +47,7 @@ def fromdesc(config, node=""):
 def get_node_resources(config):
     import os
     import yaml
-    raw = os.popen(f'kubectl --kubeconfig {config} get nodes -o yaml').read()
-    
+    raw = os.popen(f'kubectl --kubeconfig {config} get nodes -o yaml').read() 
     data  = yaml.safe_load(raw)
     res = {}
     # print(data)
