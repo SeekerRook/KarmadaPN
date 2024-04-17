@@ -71,7 +71,6 @@ def  PP_AggregatedPN(name,cluster_number:int=2):
     pn.globals.append("from KarmadaPN.util import Update_rm")
 
     pn.add_place(Place("Services"))
-    # pn.add_place(Place("Cluster_Nodes"))
 
     pn.add_transition(Transition("Propagate",Expression("policy == 'Aggregated'")))
     pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
@@ -83,7 +82,6 @@ def  PP_AggregatedPN(name,cluster_number:int=2):
 
         pn.add_input(f"C{i+1}_Resource_Modeling","Propagate",Variable(f"c{i+1}"))
         pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"Update_rm(c{i+1},svc[0],fa(svc,{clusters},{i+1}))"))
-        # pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"(c{i+1}[0]+svc[0][1]*(r(svc,{clusters},{i+1})),c{i+1}[1],c{i+1}[2]+svc[0][3]*(r(svc,{clusters},{i+1})),c{i+1}[3],c{i+1}[4]+svc[0][5]*(r(svc,{clusters},{i+1})),c{i+1}[5])"))
 
         pn.add_place(Place(f"C{i+1}"))
         pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fa(svc,{clusters},{i+1}))"))       
@@ -110,7 +108,6 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2):
     pn.globals.append("from KarmadaPN.util import Update_rm")
 
     pn.add_place(Place("Services"))
-    # pn.add_place(Place("Cluster_Nodes"))
     clusters = "[" + ','.join([f'c{i+1}' for i in range(cluster_number)]) + "]"
 
     pn.add_transition(Transition("Propagate",Expression("policy == 'Weighted_Dynamic'")))
@@ -121,7 +118,6 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2):
 
         pn.add_input(f"C{i+1}_Resource_Modeling","Propagate",Variable(f"c{i+1}"))
         pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"""Update_rm(c{i+1},svc[0],fd(svc,{clusters},{i+1}))"""))
-        # pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"""(c{i+1}[0]+svc[0][1]*(d(svc,{clusters},{i+1})),c{i+1}[1],c{i+1}[2]+svc[0][3]*(d(svc,{clusters},{i+1})),c{i+1}[3],c{i+1}[4]+svc[0][5]*(d(svc,{clusters},{i+1})),c{i+1}[5])"""))
 
         pn.add_place(Place(f"C{i+1}"))
         pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fd(svc,{clusters},{i+1}))"))      
