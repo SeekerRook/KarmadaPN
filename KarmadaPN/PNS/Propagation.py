@@ -21,8 +21,7 @@ def fi_static(replicas, weights, idx):
         a = ceil((replicas-rest)*w/sum(sweights[i:]))
         rest += a 
         res[indexes[i]]= a
-
-    return res[idx]
+    return res[idx-1]
     
 def fi_dynamic(svc, c, idx):
     from ..Functions import Available_replicas as AR
@@ -97,7 +96,7 @@ def  PP_StaticWeightsPN(name,cluster_number:int=2):
     for i in range(cluster_number):
 
         pn.add_place(Place(f"C{i+1}"))
-        pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fs(svc[2],svc[1],{i}))"))    
+        pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fs(svc[2],svc[1],{i+1}))"))    
 
     return pn
 
