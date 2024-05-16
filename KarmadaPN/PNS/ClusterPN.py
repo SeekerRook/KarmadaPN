@@ -39,11 +39,9 @@ def MultiNodeClusterPN(name,pending=[],allocated=[],available=[],running=[],mode
         #Places
         pn.add_place(Place("Pending"))
         pn.add_place(Place("Running"))
-        # pn.add_place(Place("Nodes"))
 
         pn.add_place(Place("Nodes"))
 
-        # pn.add_transition(Transition("In-Cluster_Placement",Expression("KarmadaPN.ClusterPN.f(pod,mincpu,maxcpu,minram,maxram,Ncpu,ncpu,Nram,nram,Nid,nid)")))
         pn.add_transition(Transition("In-Cluster_Placement",Expression("svc[1] > 0 and Add(node,svc[0])")))
         pn.add_input("Pending","In-Cluster_Placement",Variable("svc"))
         pn.add_output("Running","In-Cluster_Placement",Expression("svc[0]"))  

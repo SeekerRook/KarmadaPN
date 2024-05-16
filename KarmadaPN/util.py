@@ -27,30 +27,6 @@ def Multiset_Serialize(ms):
 def Marking_Serialize(m):
     return {k:Multiset_Serialize(v) for k,v in m.items()}
 
-###
-### AM and mapping generation
-###
-def explain(graph,final=0,build=False,verbose=False):
-    global VERBOSE
-    VERBOSE = verbose
-    if build:
-        for i in graph:
-            final = i
-    states = []
-    adjacency = np.zeros((final+1,final+1),dtype=int)
-    for i in range(final):
-        graph.goto(i)
-        states.append(Marking_Serialize(graph.net.get_marking()))
-        printf(f"{i} is succeeded by",end=" ")
-        for j in graph.successors(i):
-            printf(f" {j[0]} ",end=" ")
-
-            adjacency[i,j[0]] = 1
-        printf("!")
-    graph.goto(final)
-    states.append(Marking_Serialize(graph.net.get_marking()))
-    return states,adjacency
-
 
 ###
 ### pn testing functions
@@ -87,9 +63,9 @@ def graph_test(pn,name = "",timer = 10, tmpimg =100, printgraph = True):
     end = time.time()
 
     #generate adjacency matrix and state map
-    import KarmadaPN.util as util
+    import KarmadaPN.analysis as analysis
     print("Generatin Adjacency Matrix ......",end='\r')
-    lmap , am = util.explain(g,final)
+    lmap , am = analysis.explain(g,final)
     import pickle
     # ll = [l.__pnmldump__()for l in lmap]
 

@@ -1,4 +1,29 @@
 ###
+### AM and mapping generation
+###
+def explain(graph,final=0,build=False,verbose=False):
+    global VERBOSE
+    VERBOSE = verbose
+    if build:
+        for i in graph:
+            final = i
+    states = []
+    adjacency = np.zeros((final+1,final+1),dtype=int)
+    for i in range(final):
+        graph.goto(i)
+        states.append(Marking_Serialize(graph.net.get_marking()))
+        printf(f"{i} is succeeded by",end=" ")
+        for j in graph.successors(i):
+            printf(f" {j[0]} ",end=" ")
+
+            adjacency[i,j[0]] = 1
+        printf("!")
+    graph.goto(final)
+    states.append(Marking_Serialize(graph.net.get_marking()))
+    return states,adjacency
+
+
+###
 ### Graph Generation
 ###
 def txt2nparray(filename):
@@ -23,6 +48,7 @@ def SNAKES2networkx(g,i,build=False,mapping=False):
         return nparray2networkx(AM),mapping
     else:
         return nparray2networkx(AM)     
+
 
 
 ###
