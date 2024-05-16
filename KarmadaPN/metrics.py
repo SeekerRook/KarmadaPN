@@ -30,7 +30,7 @@ def transform(val,type,ramunit=""):
         raise ValueError(f"Unknown resource type {type}")
     pass
 
-def fromdesc(config, node=""):
+def _fromdesc(config, node=""):
     import os
     import yaml
     raw = os.popen(f"kubectl --kubeconfig {config} describe node {node} | grep % |"+" awk '{print $1 \" \" $2 \" \" $4 }'").read()
@@ -55,7 +55,7 @@ def get_node_resources(config):
         print (f"Examining node : {i['metadata']['name']}")
         val= i["status"]
         print(val["allocatable"])
-        val ["allocated"] = fromdesc(config,i["metadata"]["name"])  
+        val ["allocated"] = _fromdesc(config,i["metadata"]["name"])  
         res[i["metadata"]["name"]]= val
     # input(res)
     return res
