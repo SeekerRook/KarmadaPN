@@ -18,15 +18,6 @@ def amt (lbl,attr):
     
     attr["label"] = ""
 
-### 
-### SNAKES objects Serialization for pickles
-###
-def Multiset_Serialize(ms):
-    return list(ms)
-
-def Marking_Serialize(m):
-    return {k:Multiset_Serialize(v) for k,v in m.items()}
-
 
 ###
 ### pn testing functions
@@ -144,7 +135,7 @@ def final_state(i,G,name):
     from KarmadaPN.analysis import SNAKES2networkx, final_states
     graph,mapping = SNAKES2networkx(G,i,mapping=True)
     import networkx as nx
-    import matplotlib.pyplot as plt
+    # import matplotlib.pyplot as plt
     # nx.draw(graph)
     # plt.show()
     fs = final_states(graph,mapping)

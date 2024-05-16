@@ -1,3 +1,16 @@
+import numpy as np
+
+### 
+### SNAKES objects Serialization for pickles
+###
+def Multiset_Serialize(ms):
+    return list(ms)
+
+def Marking_Serialize(m):
+    return {k:Multiset_Serialize(v) for k,v in m.items()}
+
+
+
 ###
 ### AM and mapping generation
 ###
@@ -12,12 +25,8 @@ def explain(graph,final=0,build=False,verbose=False):
     for i in range(final):
         graph.goto(i)
         states.append(Marking_Serialize(graph.net.get_marking()))
-        printf(f"{i} is succeeded by",end=" ")
         for j in graph.successors(i):
-            printf(f" {j[0]} ",end=" ")
-
             adjacency[i,j[0]] = 1
-        printf("!")
     graph.goto(final)
     states.append(Marking_Serialize(graph.net.get_marking()))
     return states,adjacency
@@ -42,7 +51,7 @@ def txt2networkx(filename):
     return(nparray2networkx(txt2nparray(filename)))
 
 def SNAKES2networkx(g,i,build=False,mapping=False):
-    from .util import explain
+
     mapping,AM = explain(g,i,build=build)
     if mapping:
         return nparray2networkx(AM),mapping
