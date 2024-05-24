@@ -157,3 +157,14 @@ def pretty_print(marking):
         print(f"{place} {len(place)}")
         for token in marking[place]:
             print(f"    {token}")
+def recreate_states(i,G,name,fsidx):
+    from KarmadaPN.analysis import SNAKES2networkx, final_states
+    graph,mapping = SNAKES2networkx(G,i,mapping=True)
+    import networkx as nx
+    fs = final_states(graph,mapping)
+    path = nx.shortest_path(graph,0,list(fs.keys())[0])
+    for idx,i in enumerate(path):
+        G.goto(i)
+        G.net.draw(f"{name}_path{idx+1}.png",trans_attr=trmt,arc_attr=amt)        
+
+  

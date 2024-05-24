@@ -11,7 +11,7 @@ c1 = CPN.MultiNodeClusterPN("Cluster1")
 c2 = CPN.MultiNodeClusterPN("Cluster2")
 # c3 = CPN.MultiNodeClusterPN("Cluster3")
 
-p = P.PP_DynamicWeightsPN("Dynamic_Weights_PP",2,"resourceaware")
+p = P.PP_DynamicWeightsPN("Dynamic_Weights_PP",2,"karmada")
 
 karmada = PN.PNComponent("Karmada")
 karmada.add_component(p)
@@ -24,8 +24,8 @@ karmada.merge("Dynamic_Weights_PP_C2","Cluster2_Pending","C2_Pending")
 
 karmadapn = karmada.build()
 
-karmadapn.set_marking(nets.Marking( Karmada_Dynamic_Weights_PP_Services=nets.MultiSet([("Weighted_Dynamic",(Service("Pod",minCPU=0.5,maxCPU=1)(),4))]),
-                        Karmada_Cluster1_Nodes=nets.MultiSet([Node("node1",3,0.512)(),Node("node2",1,0.512)()]),
+karmadapn.set_marking(nets.Marking( Karmada_Dynamic_Weights_PP_Services=nets.MultiSet([("Weighted_Dynamic",(Service("Pod",minCPU=0.5,maxCPU=1)(),8))]),
+                        Karmada_Cluster1_Nodes=nets.MultiSet([Node("node1",1,0.512)(),Node("node2",1,0.512)()]),
                         Karmada_Cluster2_Nodes=nets.MultiSet([Node("node1",1,0.512)()]),
                         Karmada_Dynamic_Weights_PP_C1_Resource_Modeling=nets.MultiSet([ResourceModelling(totalCPU=4,totalRAM=1.024)()]),
                         Karmada_Dynamic_Weights_PP_C2_Resource_Modeling=nets.MultiSet([ResourceModelling(totalCPU=1,totalRAM=0.512)()])
@@ -43,7 +43,7 @@ init_state(karmadapn,name)
 
 #State Graph
 
-i,G = graph_test(karmadapn,name,timer=100,tmpimg=1,printgraph=False)
+i,G = graph_test(karmadapn,name,timer=100,tmpimg=1000,printgraph=False)
 
 
 # Final State

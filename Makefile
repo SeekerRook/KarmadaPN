@@ -8,6 +8,8 @@ static:
 	python3.11 examples/test_static_weights_pp.py
 dynamic:
 	python3.11 examples/test_dynamic_weights_pp.py
+kdynamic:
+	python3.11 examples/test_k_dynamic_weights_pp.py
 aggregated:
 	python3.11 examples/test_aggregated_pp.py
 multipolicy:
