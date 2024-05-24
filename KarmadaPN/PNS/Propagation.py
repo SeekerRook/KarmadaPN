@@ -8,6 +8,11 @@ from nets import *
 from os import system
 
 # transition functions
+def Schedule_Ability(svc,r,clusters):
+    from ..Functions import Available_replicas as AR
+    ars = [AR(c,svc) for c in clusters]
+    return sum(ars) > r
+
 def fi_static(replicas, weights, idx):
     from math import ceil
     import numpy as np
@@ -106,7 +111,9 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2,method="karmada"):
     if method == "karmada":
         pn = PNComponent(name)
         pn.globals.append("from KarmadaPN.PNS.Propagation import fi_dynamic as fd")
+        pn.globals.append("from KarmadaPN.PNS.Propagation import Schedule_Ability")
         pn.globals.append("from KarmadaPN.Functions import Update_rm")
+        clusters = "[" + ','.join([f'c{i+1}' for i in range(cluster_number)]) + "]"
         
         pn.add_place(Place("Services"))
         pn.add_place(Place("ExpandedServices"))
@@ -116,19 +123,18 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2,method="karmada"):
         pn.add_output("Services","Expand",Expression("(policy,(svc,r-1))"))# svc = (Pod,(c1w,c2w...),replicas)
         
         
-        
-        pn.add_transition(Transition("Expand",Expression("policy == 'Weighted_Dynamic' and r >0")))
-        
         pn.add_transition(Transition("Propagate"))
+        pn.add_transition(Transition("Expand",Expression(f"policy == 'Weighted_Dynamic' and r >0 and Schedule_Ability(svc,r,{clusters})")))
+        
         
         pn.add_input("ExpandedServices","Propagate",Tuple([Variable("policy"),Variable("svc")]))# svc = (Pod,(c1w,c2w...),replicas)
         
-        clusters = "[" + ','.join([f'c{i+1}' for i in range(cluster_number)]) + "]"
         
         for i in range(cluster_number):
             
             pn.add_place(Place(f"C{i+1}_Resource_Modeling"))
             pn.add_input(f"C{i+1}_Resource_Modeling","Propagate",Variable(f"c{i+1}"))
+            pn.add_input(f"C{i+1}_Resource_Modeling","Expand",Test(Variable(f"c{i+1}")))
             pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"""Update_rm(c{i+1},svc[0],fd(svc,{clusters},{i+1}))"""))
         
             pn.add_place(Place(f"C{i+1}"))
