@@ -106,7 +106,7 @@ def  PP_StaticWeightsPN(name,cluster_number:int=2):
     return pn
 
 
-def  PP_DynamicWeightsPN(name,cluster_number:int=2,method="karmada"):
+def  PP_DynamicWeightsPN(name,cluster_number:int=2,method="resourceaware"):
     
     if method == "karmada":
         pn = PNComponent(name)
