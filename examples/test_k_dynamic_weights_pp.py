@@ -9,26 +9,28 @@ from KarmadaPN import SNAKES as nets
 c1 = CPN.MultiNodeClusterPN("Cluster1")
 # pn = karmada.build()
 c2 = CPN.MultiNodeClusterPN("Cluster2")
-# c3 = CPN.MultiNodeClusterPN("Cluster3")
+c3 = CPN.MultiNodeClusterPN("Cluster3")
 
-p = P.PP_DynamicWeightsPN("Dynamic_Weights_PP",2,"karmada")
+p = P.PP_DynamicWeightsPN("Dynamic_Weights_PP",3,"karmada")
 
 karmada = PN.PNComponent("Karmada")
 karmada.add_component(p)
 karmada.add_component(c1)
 karmada.add_component(c2)
-# karmada.add_component(c3)
+karmada.add_component(c3)
 karmada.merge("Dynamic_Weights_PP_C1","Cluster1_Pending","C1_Pending")
 karmada.merge("Dynamic_Weights_PP_C2","Cluster2_Pending","C2_Pending")
-# karmada.merge("Static_Weights_PP","Cluster3_Pending")
+karmada.merge("Dynamic_Weights_PP_C3","Cluster3_Pending","C3_Pending")
 
 karmadapn = karmada.build()
 
-karmadapn.set_marking(nets.Marking( Karmada_Dynamic_Weights_PP_Services=nets.MultiSet([("Weighted_Dynamic",(Service("Pod",minCPU=0.5,maxCPU=1)(),4))]),
-                        Karmada_Cluster1_Nodes=nets.MultiSet([Node("node1",1,0.512)(),Node("node2",1,0.512)()]),
-                        Karmada_Cluster2_Nodes=nets.MultiSet([Node("node1",1,0.512)()]),
-                        Karmada_Dynamic_Weights_PP_C1_Resource_Modeling=nets.MultiSet([ResourceModelling(totalCPU=2,totalRAM=1.024)()]),
-                        Karmada_Dynamic_Weights_PP_C2_Resource_Modeling=nets.MultiSet([ResourceModelling(totalCPU=1,totalRAM=0.512)()])
+karmadapn.set_marking(nets.Marking( Karmada_Dynamic_Weights_PP_Services=nets.MultiSet([("Weighted_Dynamic",(Service("Pod",minCPU=0.2,maxCPU=1)(),12))]),
+                        Karmada_Cluster1_Nodes=nets.MultiSet([Node("node1",0.8,0.512)(),Node("node2",1,0.512)(),Node("node2",1,0.512)()]),
+                        Karmada_Cluster2_Nodes=nets.MultiSet([Node("node1",1.8,0.512)()]),
+                        Karmada_Cluster3_Nodes=nets.MultiSet([Node("node1",0.8,0.512)()]),
+                        Karmada_Dynamic_Weights_PP_C1_Resource_Modeling=nets.MultiSet([ResourceModelling(totalCPU=2.8,totalRAM=3)()]),
+                        Karmada_Dynamic_Weights_PP_C2_Resource_Modeling=nets.MultiSet([ResourceModelling(totalCPU=1.8,totalRAM=0.512)()]),
+                        Karmada_Dynamic_Weights_PP_C3_Resource_Modeling=nets.MultiSet([ResourceModelling(totalCPU=0.8,totalRAM=0.512)()])
                         ),                      
 )
 # ~~~~~~~~~~~~~~~ Testing~~~~~~~~~~~~~~~~~~~~~

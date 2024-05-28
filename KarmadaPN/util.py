@@ -145,7 +145,7 @@ def final_state(i,G,name):
         pretty_print(fs[i])
         G.goto(i)
         G.net.draw(f"{name}_final{idx+1}.png",trans_attr=trmt,arc_attr=amt)
-
+    return fs
 
 
 
@@ -154,9 +154,10 @@ def final_state(i,G,name):
 ###
 def pretty_print(marking):
     for place in marking:
-        print(f"{place} {len(place)}")
+        print(f"{place} {len(marking[place])}")
         for token in marking[place]:
             print(f"    {token}")
+
 def recreate_states(i,G,name,fsidx):
     from KarmadaPN.analysis import SNAKES2networkx, final_states
     graph,mapping = SNAKES2networkx(G,i,mapping=True)
