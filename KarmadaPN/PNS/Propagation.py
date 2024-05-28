@@ -8,8 +8,9 @@ from nets import *
 from os import system
 
 # transition functions
-def Schedule_Ability(svc,r,clusters):
+def Schedule_Ability(svc,clusters):
     from ..Functions import Available_replicas as AR
+    (svc,r) = (svc[0],svc[-1])
     ars = [AR(c,svc) for c in clusters]
     return sum(ars) > r
 
@@ -66,11 +67,14 @@ def  PP_AggregatedPN(name,cluster_number:int=2):
 
     pn = PNComponent(name)
     pn.globals.append("from KarmadaPN.PNS.Propagation import fi_aggregated as fa")
+    pn.globals.append("from KarmadaPN.PNS.Propagation import Schedule_Ability as SA")
     pn.globals.append("from KarmadaPN.Functions import Update_rm")
+
+    clusters = "[" + ','.join([f'c{i+1}' for i in range(cluster_number)]) + "]"
 
     pn.add_place(Place("Services"))
 
-    pn.add_transition(Transition("Propagate",Expression("policy == 'Aggregated'")))
+    pn.add_transition(Transition("Propagate",Expression(f"policy == 'Aggregated' and SA(svc,{clusters})")))
 
     pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
 
@@ -146,15 +150,18 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2,method="resourceaware"):
     
         pn = PNComponent(name)
         pn.globals.append("from KarmadaPN.PNS.Propagation import fi_dynamic as fd")
+        pn.globals.append("from KarmadaPN.PNS.Propagation import Schedule_Ability as SA")
         pn.globals.append("from KarmadaPN.Functions import Update_rm")
+
+        clusters = "[" + ','.join([f'c{i+1}' for i in range(cluster_number)]) + "]"
+
 
         pn.add_place(Place("Services"))
 
-        pn.add_transition(Transition("Propagate",Expression("policy == 'Weighted_Dynamic'")))
+        pn.add_transition(Transition("Propagate",Expression(f"policy == 'Weighted_Dynamic' and SA(svc,{clusters})")))
 
         pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))# svc = (Pod,(c1w,c2w...),replicas)
     
-        clusters = "[" + ','.join([f'c{i+1}' for i in range(cluster_number)]) + "]"
 
         for i in range(cluster_number):
 
