@@ -22,11 +22,22 @@ def fi_static(replicas, weights, idx):
     res = [0 for _ in weights]
     rest = 0
     indexes = [i for i, x in sorted(enumerate(weights), key=lambda x: x[1],reverse=True)]
-    for i,w in enumerate(sweights):
+    natural = [replicas*w/sum(weights) for w in weights]
 
+    for i,w in enumerate(sweights):
         a = ceil((replicas-rest)*w/sum(sweights[i:]))# if sum(sweights[i:])>0 else 0
+        # ___       
+        if i ==len(sweights)-1 and a < int(natural[indexes[i]]):
+            a += 1
+            res[indexes[i-1]] -=1
+        elif i == 0 and a == natural[indexes[i]] and not all([x%1 == 0 for x in natural]):
+            print(natural)
+            a += 1
+            res[indexes[i+1]] -=1
+        # __
         rest += a 
         res[indexes[i]]= a
+    
     return res[idx-1]
     
 def fi_dynamic(svc, c, idx):
