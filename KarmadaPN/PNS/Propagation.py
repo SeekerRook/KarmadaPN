@@ -12,7 +12,7 @@ def Schedule_Ability(svc,clusters):
     from ..Functions import Available_replicas as AR
     (svc,r) = (svc[0],svc[-1])
     ars = [AR(c,svc) for c in clusters]
-    return sum(ars) > r
+    return sum(ars) >= r
 
 def fi_static(replicas, weights, idx):
     from math import ceil
