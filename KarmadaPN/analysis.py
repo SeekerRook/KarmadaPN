@@ -68,4 +68,4 @@ def recover(state,mapping):
     return(mapping[state])
 
 def final_states(graph,mapping):
-    return {node:recover(node,mapping) for node in graph.nodes if graph.out_degree(node) == 0}
+    return {node:recover(node,mapping) for node in graph.nodes if graph.out_degree(node) == 0}, len(graph.nodes)

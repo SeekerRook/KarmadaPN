@@ -31,7 +31,6 @@ def fi_static(replicas, weights, idx):
             a += 1
             res[indexes[i-1]] -=1
         elif i == 0 and a == natural[indexes[i]] and not all([x%1 == 0 for x in natural]):
-            print(natural)
             a += 1
             res[indexes[i+1]] -=1
         # __

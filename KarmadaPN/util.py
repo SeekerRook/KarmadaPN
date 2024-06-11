@@ -33,6 +33,7 @@ def graph_test(pn,name = "",timer = 10, tmpimg =100, printgraph = True):
     g = StateGraph(pn)
     final = 0
     loading=".:':"
+    end = time.time()
 
     for i in g:
         final = i
@@ -42,7 +43,7 @@ def graph_test(pn,name = "",timer = 10, tmpimg =100, printgraph = True):
         if(tmpimg != 0 and i%tmpimg == 0 ):        
             g.net.draw(f"{name}_tmp.png",trans_attr=trmt,arc_attr=amt)
     print("Done")
-    print(f"Total time:{end - start}s")
+    if timer !=0 : print(f"Total time:{end - start}s")
 
 
     if printgraph:
@@ -131,21 +132,22 @@ def final_state_legacy(pn,name):
 
     return pn
 
-def final_state(i,G,name):
+def final_state(i,G,name,verbose=True):
+    global VERBOSE
     from KarmadaPN.analysis import SNAKES2networkx, final_states
     graph,mapping = SNAKES2networkx(G,i,mapping=True)
     import networkx as nx
     # import matplotlib.pyplot as plt
     # nx.draw(graph)
     # plt.show()
-    fs = final_states(graph,mapping)
-
-    for idx,i in enumerate(fs):
-        print(f"FINAL STATE {idx+1} ({i})")
-        pretty_print(fs[i])
-        G.goto(i)
-        G.net.draw(f"{name}_final{idx+1}.png",trans_attr=trmt,arc_attr=amt)
-    return fs
+    fs,st = final_states(graph,mapping)
+    if verbose:
+        for idx,i in enumerate(fs):
+            print(f"FINAL STATE {idx+1} ({i})")
+            pretty_print(fs[i])
+            G.goto(i)
+            G.net.draw(f"{name}_final{idx+1}.png",trans_attr=trmt,arc_attr=amt)
+    return fs,st
 
 
 
