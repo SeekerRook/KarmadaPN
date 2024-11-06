@@ -138,7 +138,7 @@ def  PP_StaticWeightsPN(name,cluster_number:int=2,method="place"):
 
         return pn
     else:
-        print(f"Onknown Method {method}")
+        print(f"Unknown Method {method}")
         exit()
 
 def  PP_DynamicWeightsPN(name,cluster_number:int=2,method="resourceaware"):
