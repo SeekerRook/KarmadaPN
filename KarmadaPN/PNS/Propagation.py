@@ -101,24 +101,45 @@ def  PP_AggregatedPN(name,cluster_number:int=2):
 
     return pn
 
-def  PP_StaticWeightsPN(name,cluster_number:int=2):
+def  PP_StaticWeightsPN(name,cluster_number:int=2,method="place"):
+    if method == "scale":
+        pn = PNComponent(name)
+        pn.globals.append("from KarmadaPN.PNS.Propagation import fi_static as fs")
 
-    pn = PNComponent(name)
-    pn.globals.append("from KarmadaPN.PNS.Propagation import fi_static as fs")
+        pn.add_place(nets.Place("Services"))
 
-    pn.add_place(Place("Services"))
+        pn.add_transition(nets.Transition("Propagate",nets.Expression("policy == 'Weighted_Static'")))
 
-    pn.add_transition(Transition("Propagate",Expression("policy == 'Weighted_Static'")))
+        pn.add_input("Services","Propagate",nets.Tuple([nets.Variable("policy"),nets.Variable("svc")]))
+        pn.add_output("Services","Propagate",nets.Tuple([nets.Variable("policy"),nets.Variable("svc")]))
 
-    pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
+        for i in range(cluster_number):
 
-    for i in range(cluster_number):
+            pn.add_place(nets.Place(f"C{i+1}"))
+            pn.add_output(f"C{i+1}","Propagate",nets.Expression(f"(svc[0],fs(svc[2],svc[1],{i+1}))"))    
 
-        pn.add_place(Place(f"C{i+1}"))
-        pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fs(svc[2],svc[1],{i+1}))"))    
+        return pn
+    elif method=="place":
 
-    return pn
 
+        pn = PNComponent(name)
+        pn.globals.append("from KarmadaPN.PNS.Propagation import fi_static as fs")
+
+        pn.add_place(Place("Services"))
+
+        pn.add_transition(Transition("Propagate",Expression("policy == 'Weighted_Static'")))
+
+        pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
+
+        for i in range(cluster_number):
+
+            pn.add_place(Place(f"C{i+1}"))
+            pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fs(svc[2],svc[1],{i+1}))"))    
+
+        return pn
+    else:
+        print(f"Onknown Method {method}")
+        exit()
 
 def  PP_DynamicWeightsPN(name,cluster_number:int=2,method="resourceaware"):
     
@@ -184,3 +205,4 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2,method="resourceaware"):
 
         return pn    
     else: print(f"Unknown method {method}")    
+
