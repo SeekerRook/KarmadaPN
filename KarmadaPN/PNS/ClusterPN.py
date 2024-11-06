@@ -51,3 +51,24 @@ def MultiNodeClusterPN(name,pending=[],allocated=[],available=[],running=[],mode
 
         return pn
 
+
+
+def SimpleClusterPN(name,pending=[],allocated=[],available=[],running=[],mode=""):
+
+        pn = PNComponent(name)
+        pn.globals.append("from KarmadaPN.Functions import Update")
+        pn.globals.append("from KarmadaPN.Functions import Add")
+        #Places
+        pn.add_place(nets.Place("Pods"))
+        # pn.add_place(nets.Place("Running"))
+
+        pn.add_place(nets.Place("Nodes"))
+
+        pn.add_transition(nets.Transition("In-Cluster_Placement",nets.Expression("svc[1] != 0 and Add(node,svc[0])")))
+        pn.add_input("Pods","In-Cluster_Placement",nets.Variable("svc"))
+        # pn.add_output("Running","In-Cluster_Placement",nets.Expression("svc[0]"))  
+        pn.add_output("Pods","In-Cluster_Placement",nets.Expression("(svc[0],svc[1]-1,svc[2]+1) if svc[1]>0  else  (svc[0],svc[1]+1,svc[2]-1) "))  
+        pn.add_input("Nodes","In-Cluster_Placement",nets.Variable("node"))
+        pn.add_output("Nodes","In-Cluster_Placement",nets.Expression("Update(node,svc[0])"))
+        
+        return pn
