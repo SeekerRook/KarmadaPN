@@ -1,24 +1,24 @@
 
 all :pypi clean cluster duplicated static dynamic aggregated multipolicy full
-cluster:
+cluster: pypi
 	python3.11 examples/test_cluster.py
-duplicated:
+duplicated: pypi
 	python3.11 examples/test_duplicate_pp.py
-static:
+static:  pypi
 	python3.11 examples/test_static_weights_pp.py
-dynamic:
+dynamic: pypi
 	python3.11 examples/test_dynamic_weights_pp.py
-kdynamic:
+kdynamic: pypi
 	python3.11 examples/test_k_dynamic_weights_pp.py
-aggregated:
+aggregated: pypi
 	python3.11 examples/test_aggregated_pp.py
-multipolicy:
+multipolicy: pypi
 	python3.11 examples/test_multi_policy.py
-full:
+full: pypi
 	python3.11 examples/test_all_policies.py
-real:
+real: pypi
 	python3.11 examples/test_real.py
-scale1:
+scale1: pypi
 	python3.11 examples/test_scale1.py
 clean:
 	rm -f *.png*
