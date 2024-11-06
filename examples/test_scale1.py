@@ -7,10 +7,10 @@ from KarmadaPN import SNAKES as nets
 
 # ~~~~~~~~~~ PN Generation ~~~~~~~~~~
 
-c1 = SimpleClusterPN("Cluster1")
-c2 = SimpleClusterPN("Cluster2")
+c1 = CPN.SimpleClusterPN("Cluster1")
+c2 = CPN.SimpleClusterPN("Cluster2")
 
-p = PP_StaticWeightsPN("Static_Weights_PP",2,method="scale")
+p = P.PP_StaticWeightsPN("Static_Weights_PP",2,method="scale")
 
 karmada = PN.PNComponent("Karmada")
 karmada.add_component(p)

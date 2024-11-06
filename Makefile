@@ -18,6 +18,8 @@ full:
 	python3.11 examples/test_all_policies.py
 real:
 	python3.11 examples/test_real.py
+scale1:
+	python3.11 examples/test_scale1.py
 clean:
 	rm -f *.png*
 	rm -f *.pkl*
