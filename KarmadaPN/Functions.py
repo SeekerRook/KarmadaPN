@@ -1,7 +1,7 @@
-def Update(node,svc):
+def Update(node,svc,replicas=1):
     from .Tokens import Node , Service
 
-    return Node.from_tuple(node).update(Service.from_tuple(svc))()
+    return Node.from_tuple(node).update(Service.from_tuple(svc),replicas)()
 
 def Add(node,svc):
     from .Tokens import Node , Service

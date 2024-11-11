@@ -69,6 +69,6 @@ def SimpleClusterPN(name,pending=[],allocated=[],available=[],running=[],mode=""
         # pn.add_output("Running","In-Cluster_Placement",nets.Expression("svc[0]"))  
         pn.add_output("Pods","In-Cluster_Placement",nets.Expression("(svc[0],svc[1]-1,svc[2]+1) if svc[1]>0  else  (svc[0],svc[1]+1,svc[2]-1) "))  
         pn.add_input("Nodes","In-Cluster_Placement",nets.Variable("node"))
-        pn.add_output("Nodes","In-Cluster_Placement",nets.Expression("Update(node,svc[0])"))
+        pn.add_output("Nodes","In-Cluster_Placement",nets.Expression("Update(node,svc[0],svc[1])"))
         
         return pn

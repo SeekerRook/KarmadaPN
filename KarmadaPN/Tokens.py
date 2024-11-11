@@ -32,11 +32,11 @@ class Node:
     def add(self,svc:Service):
 
         return (self.totalCPU - self.allocatedCPU >= svc.minCPU )and(self.totalRAM - self.allocatedRAM >= svc.minRAM)and( self.maxPods==0 or self.maxPods - self.runningPods >= svc.minPods )
-    def update(self,svc:Service):
+    def update(self,svc:Service,replicas=1):
         res = self.copy()
-        res.allocatedCPU += svc.minCPU
-        res.allocatedRAM += svc.minRAM
-        res.runningPods += svc.minPods
+        res.allocatedCPU += svc.minCPU*(replicas/abs(replicas))
+        res.allocatedRAM += svc.minRAM*(replicas/abs(replicas))
+        res.runningPods += svc.minPods*(replicas/abs(replicas))
         return res
     @classmethod
     def from_tuple(cls,tuple):

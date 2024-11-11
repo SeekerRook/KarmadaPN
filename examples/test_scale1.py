@@ -29,10 +29,10 @@ karmadapn = karmada.build()
 # )
 
 initial_marking= {
-    "Karmada_Static_Weights_PP_Services":nets.MultiSet([("Weighted_Static",(Service("Pod",minCPU=0.2,maxCPU=1)(),(2,1),1,3))]),
-    "Karmada_Cluster1_Pods":nets.MultiSet([((Service("Pod",minCPU=200,maxCPU=1000)(),0,3))]),
+    # "Karmada_Static_Weights_PP_Services":nets.MultiSet([("Weighted_Static",(Service("Pod",minCPU=0.2,maxCPU=1)(),(2,1),1,3))]),
+    "Karmada_C2_Pods":nets.MultiSet([((Service("Pod",minCPU=200,maxCPU=1000)(),200,3))]),
     "Karmada_Cluster1_Nodes":nets.MultiSet([Node("node1",2000,1000)(),Node("node2",1000,1000)()]),
-    "Karmada_Cluster2_Nodes":nets.MultiSet([Node("node1",4,0.512)()])
+    "Karmada_Cluster2_Nodes":nets.MultiSet([Node("node1",40000,512,runningPods=3)()]) 
 
 }
 
