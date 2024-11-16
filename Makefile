@@ -1,25 +1,25 @@
 
 all :pypi clean cluster duplicated static dynamic aggregated multipolicy full
 cluster: pypi
-	python3.11 examples/test_cluster.py
+	python examples/test_cluster.py
 duplicated: pypi
-	python3.11 examples/test_duplicate_pp.py
+	python examples/test_duplicate_pp.py
 static:  pypi
-	python3.11 examples/test_static_weights_pp.py
+	python examples/test_static_weights_pp.py
 dynamic: pypi
-	python3.11 examples/test_dynamic_weights_pp.py
+	python examples/test_dynamic_weights_pp.py
 kdynamic: pypi
-	python3.11 examples/test_k_dynamic_weights_pp.py
+	python examples/test_k_dynamic_weights_pp.py
 aggregated: pypi
-	python3.11 examples/test_aggregated_pp.py
+	python examples/test_aggregated_pp.py
 multipolicy: pypi
-	python3.11 examples/test_multi_policy.py
+	python examples/test_multi_policy.py
 full: pypi
-	python3.11 examples/test_all_policies.py
+	python examples/test_all_policies.py
 real: pypi
-	python3.11 examples/test_real.py
+	python examples/test_real.py
 scale1: pypi
-	python3.11 examples/test_scale1.py
+	python examples/test_scale1.py
 clean:
 	rm -f *.png*
 	rm -f *.pkl*
@@ -32,4 +32,4 @@ deepclean: clean
 	rm -rf KarmadaPN.egg-info/
 	rm -rf build/
 pypi:
-	pip3.11 install .
+	pip install .
