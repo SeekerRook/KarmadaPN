@@ -14,8 +14,6 @@ setup(
       'SNAKES',
       'numpy',
       'networkx',
-      
-
   ],
   
   

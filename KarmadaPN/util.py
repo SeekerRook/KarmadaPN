@@ -42,6 +42,7 @@ def graph_test(pn,name = "",timer = 10, tmpimg =100, printgraph = True):
             print(f"    {loading[i//10%len(loading)]}   states: {i} | time: {int(end-start)}s",end='\r')
         if(tmpimg != 0 and i%tmpimg == 0 ):        
             g.net.draw(f"{name}_tmp.png",trans_attr=trmt,arc_attr=amt)
+            if tmpimg == 1 : input()
     print("Done")
     if timer !=0 : print(f"Total time:{end - start}s")
 
