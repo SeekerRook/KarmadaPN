@@ -11,8 +11,8 @@ setup(
   long_description_content_type='text/markdown',  # Sets content type for README
   # Optional arguments
   install_requires=[  # List of dependencies your package needs
-      'SNAKES',
-      'numpy',
+      'SNAKES==0.9.32',
+      'numpy==1.26',
       'networkx',
   ],
   
