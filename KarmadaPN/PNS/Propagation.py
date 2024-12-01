@@ -54,7 +54,7 @@ def fi_aggregated(svc, c, idx):
 
     return x
 
-# petri nets
+
 
 def PP_DuplicatedPN (name,cluster_number:int=2):
 
@@ -117,14 +117,12 @@ def  PP_StaticWeightsPN(name,cluster_number:int=2,method="place"):
         pn.add_transition(Transition("Propagate",Expression("policy == 'Weighted_Static'")))
 
         pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
-        # pn.add_output("Services","Propagate", Expression(f"(policy,(svc[0],svc[1],svc[2]))"))#,Tuple([Variable("policy"),Variable("svc")])) # Replace with Expression
 
         for i in range(cluster_number):
 
             pn.add_place(Place(f"C{i+1}"))
             pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fs(svc[2],svc[1],{i+1})-r{i+1}-R{i+1},R{i+1})"))    
-            # pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],r{i+1}+fs(svc[2]-({'+'.join([f'R{x+1}' for x in range(cluster_number)])}),svc[1],{i+1}),R{i+1})"))    
-
+                                                            #(svc, fs(r,w,i) - (ri+Ri) , Ri)
             pn.add_input(f"C{i+1}","Propagate",Tuple([Variable(f"s{i+1}"),Variable(f"r{i+1}"),Variable(f"R{i+1}")]))    
 
         return pn
