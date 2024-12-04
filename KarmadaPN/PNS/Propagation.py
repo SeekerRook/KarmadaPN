@@ -121,7 +121,8 @@ def  PP_StaticWeightsPN(name,cluster_number:int=2,method="place"):
         for i in range(cluster_number):
 
             pn.add_place(Place(f"C{i+1}"))
-            pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fs(svc[2],svc[1],{i+1})-r{i+1}-R{i+1},R{i+1})"))    
+            pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fs(svc[2],svc[1],{i+1})-R{i+1},R{i+1})"))    
+            #pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fs(svc[2],svc[1],{i+1})-r{i+1}-R{i+1},R{i+1})"))    
                                                             #(svc, fs(r,w,i) - ri-Ri , Ri)
             pn.add_input(f"C{i+1}","Propagate",Tuple([Variable(f"s{i+1}"),Variable(f"r{i+1}"),Variable(f"R{i+1}")]))    
 
