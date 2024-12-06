@@ -15,7 +15,7 @@ c1 = CPN.SimpleClusterPN("Cluster1")
 c2 = CPN.SimpleClusterPN("Cluster2")
 c3 = CPN.SimpleClusterPN("Cluster3")
 
-p = P.PP_StaticWeightsPN("Static_Weights_PP",3,method="scale")
+p = P.PP_StaticWeightsPN("Static_Weights_PP",3)
 
 karmada = PN.PNComponent("Karmada")
 karmada.add_component(p)

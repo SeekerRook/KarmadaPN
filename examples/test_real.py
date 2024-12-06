@@ -1,7 +1,7 @@
 from KarmadaPN.metrics import get_cluster_resources, get_node_resources ,cluster_tokenize,node_tokenize,transform
 
 from KarmadaPN.PNS import ClusterPN as CPN
-from KarmadaPN.PNS import Propagation as P
+from KarmadaPN.PNS import PropagationLegacy as P
 from KarmadaPN import PN as PN
 from KarmadaPN.Tokens import Service, Node
 from KarmadaPN import SNAKES as nets
