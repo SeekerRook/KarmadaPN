@@ -10,7 +10,7 @@ from KarmadaPN import SNAKES as nets
 c1 = CPN.SimpleClusterPN("Cluster1")
 c2 = CPN.SimpleClusterPN("Cluster2")
 
-p = P.PP_DuplicatedPN("Dynamic_Weights_PP",2)
+p = P.PP_DynamicWeightsPN("Dynamic_Weights_PP",2)
 
 karmada = PN.PNComponent("Karmada")
 karmada.add_component(p)
@@ -23,12 +23,12 @@ karmadapn = karmada.build()
 
 
 initial_marking= {
-    "Karmada_Dynamic_Weights_PP_Services":nets.MultiSet([("Duplicated",(Service("Pod",minCPU=200,maxCPU=1000)(),5))]),
+    "Karmada_Dynamic_Weights_PP_Services":nets.MultiSet([("Weighted_Dynamic",(Service("Pod",minCPU=200,maxCPU=1000)(),5))]),
     "Karmada_C1_Pods":nets.MultiSet([((Service("Pod",minCPU=200,maxCPU=1000)(),0,0))]),
     "Karmada_C2_Pods":nets.MultiSet([((Service("Pod",minCPU=200,maxCPU=1000)(),0,0))]),
 
-    "Karmada_Dynamic_Weights_PP_C1_Resource_Modelling":nets.MultiSet([ResourceModelling(totalCPU=2000,totalRAM=1000)()]),
-    "Karmada_Dynamic_Weights_PP_C2_Resource_Modelling":nets.MultiSet([ResourceModelling(totalCPU=4000,totalRAM=512)()]),
+    "Karmada_Dynamic_Weights_PP_C1_Resource_Modeling":nets.MultiSet([ResourceModelling(totalCPU=2000,totalRAM=1000)()]),
+    "Karmada_Dynamic_Weights_PP_C2_Resource_Modeling":nets.MultiSet([ResourceModelling(totalCPU=4000,totalRAM=512)()]),
 
     "Karmada_Cluster1_Nodes":nets.MultiSet([Node("node1",2000,1000)()]),
     "Karmada_Cluster2_Nodes":nets.MultiSet([Node("node1",4000,512)()])

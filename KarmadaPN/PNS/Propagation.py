@@ -98,7 +98,7 @@ def  PP_AggregatedPN(name,cluster_number:int=2):
         pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"Update_rm(c{i+1},svc[0],fa(svc,{clusters},{i+1})-r{i+1}-R{i+1})"))
 
         pn.add_place(Place(f"C{i+1}"))
-        pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fa(svc,{clusters},{i+1})-R{i+1})"))   
+        pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fa(svc,{clusters},{i+1})-R{i+1},R{i+1})"))   
         pn.add_input(f"C{i+1}","Propagate",Tuple([Variable(f"s{i+1}"),Variable(f"r{i+1}"),Variable(f"R{i+1}")]))    
 
     return pn
