@@ -13,7 +13,7 @@ def Schedule_Ability(svc,clusters,Rs):
     (svc,r) = (svc[0],svc[-1])
     ars = [AR(c,svc) for c in clusters]
     return sum(ars) >= r-sum(Rs)
-    
+
 
 
 def fi_static(replicas, weights, idx):
@@ -84,10 +84,12 @@ def  PP_AggregatedPN(name,cluster_number:int=2):
     pn.globals.append("from KarmadaPN.Functions import Update_rm")
 
     clusters = "[" + ','.join([f'c{i+1}' for i in range(cluster_number)]) + "]"
+    Rs = "[" + ','.join([f'R{i+1}' for i in range(cluster_number)]) + "]"
 
     pn.add_place(Place("Services"))
 
-    pn.add_transition(Transition("Propagate",Expression(f"policy == 'Aggregated' and SA(svc,{clusters})")))
+    pn.add_transition(Transition("Propagate",Expression(f"policy == 'Aggregated' and SA(svc,{clusters}{Rs})")))
+    
 
     pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
 
