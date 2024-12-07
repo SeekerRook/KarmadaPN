@@ -27,7 +27,9 @@ def fi_static(replicas, weights, idx):
     natural = [replicas*w/sum(weights) for w in weights]
 
     for i,w in enumerate(sweights):
-        a = ceil((replicas-rest)*w/sum(sweights[i:]))# if sum(sweights[i:])>0 else 0
+        
+        # a = ceil((replicas-rest)*w/sum(sweights[i:]))# if sum(sweights[i:])>0 else 0
+        a = ceil((replicas-rest)*w/sum(sweights[i:])) if sum(sweights[i:])>0 else 0
         # ___       
         if i ==len(sweights)-1 and a < int(natural[indexes[i]]):
             a += 1

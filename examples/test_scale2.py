@@ -37,7 +37,7 @@ sequence = [1,
  1,
  0]
 
-svc = Service("Podd",0.5,1)()
+svc = Service("Podd",minCPU=0.5,minRAM=1)()
 
 
 
