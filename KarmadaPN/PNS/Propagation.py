@@ -8,11 +8,13 @@ from nets import *
 from os import system
 
 # transition functions
-def Schedule_Ability(svc,clusters):
+def Schedule_Ability(svc,clusters,Rs):
     from ..Functions import Available_replicas as AR
     (svc,r) = (svc[0],svc[-1])
     ars = [AR(c,svc) for c in clusters]
-    return sum(ars) >= r
+    return sum(ars) >= r-sum(Rs)
+    
+
 
 def fi_static(replicas, weights, idx):
     from math import ceil
@@ -174,11 +176,13 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2,method="resourceaware"):
         pn.globals.append("from KarmadaPN.Functions import Update_rm")
 
         clusters = "[" + ','.join([f'c{i+1}' for i in range(cluster_number)]) + "]"
+        Rs = "[" + ','.join([f'R{i+1}' for i in range(cluster_number)]) + "]"
 
 
         pn.add_place(Place("Services"))
 
-        pn.add_transition(Transition("Propagate",Expression(f"policy == 'Weighted_Dynamic' and SA(svc,{clusters})")))
+
+        pn.add_transition(Transition("Propagate",Expression(f"policy == 'Weighted_Dynamic' and SA(svc,{clusters},{Rs})")))
 
         pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))# svc = (Pod,(c1w,c2w...),replicas)
     
