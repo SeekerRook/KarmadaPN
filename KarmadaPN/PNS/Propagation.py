@@ -90,7 +90,7 @@ def  PP_AggregatedPN(name,cluster_number:int=2):
 
     pn.add_place(Place("Services"))
 
-    pn.add_transition(Transition("Propagate",Expression(f"policy == 'Aggregated' and SA(svc,{clusters}{Rs})")))
+    pn.add_transition(Transition("Propagate",Expression(f"policy == 'Aggregated' and SA(svc,{clusters},{Rs})")))
     
 
     pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
