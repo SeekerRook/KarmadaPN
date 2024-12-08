@@ -100,6 +100,7 @@ karmadapn.draw("out.png")
 pn = run(karmadapn)
 pnprint(pn)
 finalstate = []
+clusterstate = []
 for i in tqdm(sequence):
 
   print(f"kubectl scale Pod --replicas {i}")
@@ -107,6 +108,7 @@ for i in tqdm(sequence):
   pnprint(pn)
   pn = run(pn)
   finalstate.append(([i for i in pn.get_marking()["Karmada_C1_Pods"]][0][1:],[i for i in pn.get_marking()["Karmada_C2_Pods"]][0][1:],[i for i in pn.get_marking()["Karmada_C3_Pods"]][0][1:]))
+  clusterstate.append(([i for i in pn.get_marking()["Karmada_Cluster1_Nodes"]][0][1:],[i for i in pn.get_marking()["Karmada_Cluster2_Nodes"]][0][1:],[i for i in pn.get_marking()["Karmada_Cluster3_Nodes"]][0][1:]))
   pnprint(pn)
 # pnprint(pn)
 
@@ -117,4 +119,4 @@ for idx,i in enumerate(sequence):
   print (f"{i} --> {finalstate[idx]}")
 
 for idx,i in enumerate(sequence):
-  print (f"{i} --> {finalstate_sum[idx]}")
+  print (f"{i} --> {finalstate_sum[idx]} | {clusterstate[idx]}")

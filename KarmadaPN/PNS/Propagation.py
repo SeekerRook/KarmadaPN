@@ -43,10 +43,18 @@ def fi_static(replicas, weights, idx):
     
     return res[idx-1]
     
-def fi_dynamic(svc, c, idx):
+def fi_dynamic(svc, c, idx,R):
     from ..Functions import Available_replicas as AR
     cluster_number = len(c)
-    weights = [AR(c[i],svc[0]) for i in range(cluster_number)]
+    # if svc[1]-sum(R) > 0:
+    #     weights = [AR(c[i],svc[0]) for i in range(cluster_number)]
+    # else : 
+    #     _ = input()
+    if True:
+        c_empty = [(0,i[1],0,i[3],0,i[5]) for i in c]
+        weights = [AR(c_empty[i],svc[0]) for i in range(cluster_number)]
+
+
     return fi_static(svc[1],weights,idx)
 
 def fi_aggregated(svc, c, idx):
@@ -195,10 +203,10 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2,method="resourceaware"):
 
             pn.add_place(Place(f"C{i+1}_Resource_Modeling"))
             pn.add_input(f"C{i+1}_Resource_Modeling","Propagate",Variable(f"c{i+1}"))
-            pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"""Update_rm(c{i+1},svc[0],fd((svc[0],svc[-1]-R{i+1}),{clusters},{i+1})-r{i+1}-R{i+1})"""))
+            pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"""Update_rm(c{i+1},svc[0],fd(svc,{clusters},{i+1},{Rs})-r{i+1}-R{i+1})"""))
 
             pn.add_place(Place(f"C{i+1}"))
-            pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fd((svc[0],svc[-1]-R{i+1}),{clusters},{i+1}),R{i+1})"))   
+            pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fd(svc,{clusters},{i+1},{Rs})-R{i+1},R{i+1})"))   
             pn.add_input(f"C{i+1}","Propagate",Tuple([Variable(f"s{i+1}"),Variable(f"r{i+1}"),Variable(f"R{i+1}")]))    
 
         return pn    
