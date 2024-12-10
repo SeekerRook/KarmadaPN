@@ -132,7 +132,7 @@ def  PP_StaticWeightsPN(name,cluster_number:int=2):
 
     pn.add_place(Place("Services"))
 
-    pn.add_transition(Transition("Propagate",Expression(f"policy == 'Weighted_Static' and all([i == svc[0] for i in {svcs}])")))
+    pn.add_transition(Transition("Propagate",Expression(f"policy == 'Weighted_Static' and all([i[0] == svc[0] for i in {svcs}])")))
 
     pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
 
