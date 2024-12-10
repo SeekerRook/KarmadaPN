@@ -96,10 +96,11 @@ def  PP_AggregatedPN(name,cluster_number:int=2):
 
     clusters = "[" + ','.join([f'c{i+1}' for i in range(cluster_number)]) + "]"
     Rs = "[" + ','.join([f'R{i+1}' for i in range(cluster_number)]) + "]"
+    condition = " and ".join([f"svc[0][0] == s{i+1}[0]" for i in range(cluster_number)])
 
     pn.add_place(Place("Services"))
 
-    pn.add_transition(Transition("Propagate",Expression(f"policy == 'Aggregated' and SA(svc,{clusters},{Rs})")))
+    pn.add_transition(Transition("Propagate",Expression(f"policy == 'Aggregated' and SA(svc,{clusters},{Rs}) and {condition}")))
     
 
     pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
