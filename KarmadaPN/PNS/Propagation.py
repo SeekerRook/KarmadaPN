@@ -43,19 +43,20 @@ def fi_static(replicas, weights, idx):
     
     return res[idx-1]
     
-def fi_dynamic(svc, c, idx,R):
+def fi_dynamic(svc, c, idx,r,R):
     from ..Functions import Available_replicas as AR
     cluster_number = len(c)
-    # if svc[1]-sum(R) > 0:
-    #     weights = [AR(c[i],svc[0]) for i in range(cluster_number)]
-    # else : 
-    #     _ = input()
-    if True:
+    if svc[1]-sum(R)-sum(r) > 0:
+        weights = [AR(c[i],svc[0]) for i in range(cluster_number)]
+        return fi_static(svc[1]-sum(R)-sum(r),weights,idx)+r[idx-1]+R[idx-1]
+
+    else : 
         c_empty = [(0,i[1],0,i[3],0,i[5]) for i in c]
         weights = [AR(c_empty[i],svc[0]) for i in range(cluster_number)]
+        return fi_static(svc[1],weights,idx)
+    # return fi_static(svc[1],weights,idx)
 
 
-    return fi_static(svc[1],weights,idx)
 
 def fi_aggregated(svc, c, idx):
     from ..Functions import Available_replicas as AR
@@ -74,7 +75,7 @@ def PP_DuplicatedPN (name,cluster_number:int=2):
 
     pn.add_place(Place("Services"))
 
-    pn.add_transition(Transition("Propagate",Expression("policy == 'Duplicated'")))
+    pn.add_transition(Transition("Propagate",Expression("policy == 'Duplicated' ")))
 
     pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
 
@@ -118,6 +119,7 @@ def  PP_AggregatedPN(name,cluster_number:int=2):
     return pn
 
 def  PP_StaticWeightsPN(name,cluster_number:int=2):
+    rs = "[" + ','.join([f'r{i+1}' for i in range(cluster_number)]) + "]"
 
     # (policy,svc) , svc = ((name,c,C,m,M,p,P),(w1,w2,....,wn),replicas,Replicas)
     # svc = svc[0]
@@ -130,7 +132,7 @@ def  PP_StaticWeightsPN(name,cluster_number:int=2):
 
     pn.add_place(Place("Services"))
 
-    pn.add_transition(Transition("Propagate",Expression("policy == 'Weighted_Static'")))
+    pn.add_transition(Transition("Propagate",Expression(f"policy == 'Weighted_Static' and [i = svc[0] for i in {rs}]")))
 
     pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
 
@@ -189,6 +191,7 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2,method="resourceaware"):
 
         clusters = "[" + ','.join([f'c{i+1}' for i in range(cluster_number)]) + "]"
         Rs = "[" + ','.join([f'R{i+1}' for i in range(cluster_number)]) + "]"
+        rs = "[" + ','.join([f'r{i+1}' for i in range(cluster_number)]) + "]"
 
 
         pn.add_place(Place("Services"))
@@ -203,10 +206,10 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2,method="resourceaware"):
 
             pn.add_place(Place(f"C{i+1}_Resource_Modeling"))
             pn.add_input(f"C{i+1}_Resource_Modeling","Propagate",Variable(f"c{i+1}"))
-            pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"""Update_rm(c{i+1},svc[0],fd(svc,{clusters},{i+1},{Rs})-r{i+1}-R{i+1})"""))
+            pn.add_output(f"C{i+1}_Resource_Modeling","Propagate",Expression(f"""Update_rm(c{i+1},svc[0],fd(svc,{clusters},{i+1},{rs},{Rs})-r{i+1}-R{i+1})"""))
 
             pn.add_place(Place(f"C{i+1}"))
-            pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fd(svc,{clusters},{i+1},{Rs})-R{i+1},R{i+1})"))   
+            pn.add_output(f"C{i+1}","Propagate",Expression(f"(svc[0],fd(svc,{clusters},{i+1},{rs},{Rs})-R{i+1},R{i+1})"))   
             pn.add_input(f"C{i+1}","Propagate",Tuple([Variable(f"s{i+1}"),Variable(f"r{i+1}"),Variable(f"R{i+1}")]))    
 
         return pn    
