@@ -119,7 +119,7 @@ def  PP_AggregatedPN(name,cluster_number:int=2):
     return pn
 
 def  PP_StaticWeightsPN(name,cluster_number:int=2):
-    rs = "[" + ','.join([f'r{i+1}' for i in range(cluster_number)]) + "]"
+    svcs = "[" + ','.join([f's{i+1}' for i in range(cluster_number)]) + "]"
 
     # (policy,svc) , svc = ((name,c,C,m,M,p,P),(w1,w2,....,wn),replicas,Replicas)
     # svc = svc[0]
@@ -132,7 +132,7 @@ def  PP_StaticWeightsPN(name,cluster_number:int=2):
 
     pn.add_place(Place("Services"))
 
-    pn.add_transition(Transition("Propagate",Expression(f"policy == 'Weighted_Static' and all([i == svc[0] for i in {rs}])")))
+    pn.add_transition(Transition("Propagate",Expression(f"policy == 'Weighted_Static' and all([i == svc[0] for i in {svcs}])")))
 
     pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
 
