@@ -3,6 +3,65 @@ A Python library for modeling Multi-Cluster Infrastructures based on Karmada usi
 
 ---
 
+## Installation
+On the root directory run
+```
+make pypi
+```
+or 
+```
+pip install .
+```
+---
+
+The library is based on [SNAKES](https://snakes.ibisc.univ-evry.fr/)  library for Petri Nets in Python.
+
+## Example
+
+```python
+from KarmadaPN.PNS import ClusterPN as CPN
+from KarmadaPN.PNS import Propagation as P
+from KarmadaPN import PN as PN
+from KarmadaPN.Tokens import Service, Node
+from KarmadaPN import SNAKES as nets
+
+# PN Generation 
+
+c1 = CPN.MultiNodeClusterPN("C1")
+c2 = CPN.MultiNodeClusterPN("C2")
+
+p = P.PP_StaticWeightsPN("Static_Weights_PP",2)
+
+karmada = PN.PNComponent("KPN")
+karmada.add_component(p)
+karmada.add_component(c1)
+karmada.add_component(c2)
+karmada.merge("Static_Weights_PP_C1","C1_Pending","C1_merged_Pending")
+karmada.merge("Static_Weights_PP_C2","C2_Pending","c2_merged_Pending")
+
+
+karmadapn = karmada.build()
+
+# Set Marking
+karmadapn.set_marking(nets.Marking( KPN_Static_Weights_PP_Services=nets.MultiSet([("Weighted_Static",(Service("Pod",minCPU=0.2,maxCPU=1)(),(2,1),5))]),
+                        KPN_C1_Nodes=nets.MultiSet([Node("worker1",3,0.512)()]),
+                        KPN_C2_Nodes=nets.MultiSet([Node("worker2",4,0.512)()]),
+                        ),                      
+)
+
+# Display current tate as Image
+karmadapn.draw("reult.png")
+
+
+
+```
+![alt text](out.png)
+
+For more examples see the [examples](/examples)
+
+
+
+---
 ## Structure
 ```
 KarmadaPN
@@ -30,19 +89,3 @@ KarmadaPN
 ```
 \**[more about Karmada Propagation Policies](https://karmada.io/docs/userguide/scheduling/resource-propagating/#multiple-strategies-of-replica-scheduling)*
 
----
-
-The library is based on [SNAKES](https://snakes.ibisc.univ-evry.fr/)  library for Petri Nets in Python.
-
-For examples see the [test files](/tests)
-
-
-## INSTALLATION
-On the root directory run
-```
-make pypi
-```
-or 
-```
-pip install .
-```
