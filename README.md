@@ -55,7 +55,7 @@ karmadapn.draw("reult.png")
 
 
 ```
-![alt text](out.png)
+
 
 For more examples see the [examples](/examples)
 
