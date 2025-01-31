@@ -76,8 +76,8 @@ def PP_DuplicatedPN (name,cluster_number:int=2):
 def  PP_AggregatedPN(name,cluster_number:int=2):
 
     pn = PNComponent(name)
-    pn.globals.append("from KarmadaPN.PNS.Propagation import fi_aggregated as fa")
-    pn.globals.append("from KarmadaPN.PNS.Propagation import Schedule_Ability as SA")
+    pn.globals.append("from KarmadaPN.PNS.PropagationLegacy import fi_aggregated as fa")
+    pn.globals.append("from KarmadaPN.PNS.PropagationLegacy import Schedule_Ability as SA")
     pn.globals.append("from KarmadaPN.Functions import Update_rm")
 
     clusters = "[" + ','.join([f'c{i+1}' for i in range(cluster_number)]) + "]"
@@ -105,7 +105,7 @@ def  PP_StaticWeightsPN(name,cluster_number:int=2):
 
     # (policy,svc) , svc = ((name,c,C,m,M,p,P),(w1,w2,....,wn),replicas)
     pn = PNComponent(name)
-    pn.globals.append("from KarmadaPN.PNS.Propagation import fi_static as fs")
+    pn.globals.append("from KarmadaPN.PNS.PropagationLegacy import fi_static as fs")
     pn.add_place(Place("Services"))
     pn.add_transition(Transition("Propagate",Expression("policy == 'Weighted_Static'")))
     pn.add_input("Services","Propagate",Tuple([Variable("policy"),Variable("svc")]))
@@ -121,8 +121,8 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2,method="resourceaware"):
     
     if method == "karmada":
         pn = PNComponent(name)
-        pn.globals.append("from KarmadaPN.PNS.Propagation import fi_dynamic as fd")
-        pn.globals.append("from KarmadaPN.PNS.Propagation import Schedule_Ability")
+        pn.globals.append("from KarmadaPN.PNS.PropagationLegacy import fi_dynamic as fd")
+        pn.globals.append("from KarmadaPN.PNS.PropagationLegacy import Schedule_Ability")
         pn.globals.append("from KarmadaPN.Functions import Update_rm")
         clusters = "[" + ','.join([f'c{i+1}' for i in range(cluster_number)]) + "]"
         
@@ -156,8 +156,8 @@ def  PP_DynamicWeightsPN(name,cluster_number:int=2,method="resourceaware"):
     elif method == "resourceaware":
     
         pn = PNComponent(name)
-        pn.globals.append("from KarmadaPN.PNS.Propagation import fi_dynamic as fd")
-        pn.globals.append("from KarmadaPN.PNS.Propagation import Schedule_Ability as SA")
+        pn.globals.append("from KarmadaPN.PNS.PropagationLegacy import fi_dynamic as fd")
+        pn.globals.append("from KarmadaPN.PNS.PropagationLegacy import Schedule_Ability as SA")
         pn.globals.append("from KarmadaPN.Functions import Update_rm")
 
         clusters = "[" + ','.join([f'c{i+1}' for i in range(cluster_number)]) + "]"
